@@ -9,56 +9,49 @@ import { Button } from './components/ui/button';
 import { ScrollArea } from './components/ui/scroll-area';
 import { Sprout, Droplets, Sun, Shovel, Heart, Leaf, MapPin, Mail, MessageCircle, Facebook, BookOpen, ShoppingBag, ExternalLink } from 'lucide-react';
 
-// Hero Images
-const heroImage = '/images/hero/peach-pink-hibiscus-closeup.jpg';
-const heroAlt = '/images/hero/pink-hibiscus-garden.jpg';
-const heroLandscape = '/images/hero/garden-landscape-overview.jpg';
+const  daniellePhoto = '/images/garden-scenes/gardener-with-flowers.jpg';
+const  orchidsPhoto = '/images/flowers/orchids/orchidsPhoto.jpeg';
 
-// Flowers - Hibiscus
-const peachHibiscus = '/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg';
-const whiteHibiscus = '/images/flowers/hibiscus/white-hibiscus-flower.jpg';
-const coralHibiscus = '/images/flowers/hibiscus/coral-hibiscus-flower.jpg';
-const pinkHibiscusClose = '/images/flowers/hibiscus/pink-hibiscus-closeup.jpg';
-const redHibiscus = '/images/flowers/hibiscus/red-hibiscus-flower.jpg';
-const yellowHibiscus = '/images/flowers/hibiscus/yellow-hibiscus-flower.jpg';
-const pinkHibiscusGarden = '/images/flowers/hibiscus/pink-hibiscus-garden.jpg';
+const hibiscusPhoto = '/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg';
 
-// Flowers - Orchids
-const pinkOrchid = '/images/flowers/orchids/pink-orchid-flowers.jpg';
-const yellowOrchid = '/images/flowers/orchids/yellow-oncidium-orchid.jpg';
-const yellowOrchidClose = '/images/flowers/orchids/yellow-dancing-lady-orchid-closeup.jpg';
-const orchidPalm = '/images/flowers/orchids/orchid-growing-palm-tree.jpg';
-const pinkBauhinia = '/images/flowers/orchids/pink-bauhinia-orchid-tree.jpg';
+const productPhoto = '/images/indoor/succulent-garden-display.jpg';
 
-// Flowers - Other
-const redAmaryllis = '/images/flowers/other/red-amaryllis-flowers.jpg';
-const purpleMorningGlory = '/images/flowers/other/purple-morning-glory.jpg';
-const orangeTrumpet = '/images/flowers/other/orange-trumpet-vine-flowers.jpg';
+const chilliesPhoto = '/images/gallery/mixed-flowering-plants-garden.jpg';
+const auberginePhoto = '/images/gallery/potted-plants-collection.jpg';
 
-// Edible - Vegetables
-const freshLettuce = '/images/edible/vegetables/fresh-green-lettuce.jpg';
-const leafyGreens = '/images/edible/vegetables/leafy-green-vegetables.jpg';
-const tomatoPlants = '/images/edible/vegetables/tomato-plants-growing.jpg';
-const vegetableGarden = '/images/edible/vegetables/vegetable-garden-beds.jpg';
-const floweringVeggies = '/images/edible/vegetables/flowering-vegetable-plants.jpg';
+const lemonsPhoto ='/images/flowers/hibiscus/red-hibiscus-flower.jpg';
 
-// Edible - Fruits
-const mulberries = '/images/edible/fruits/fresh-mulberries-branch.jpg';
+const plantSalePhoto = '/images/flowers/other/orange-trumpet-vine-flowers.jpg';
 
-// Edible - Herbs
-const herbGarden = '/images/edible/herbs/herb-garden-section.jpg';
+const papayaPhoto = '/images/flowers/hibiscus/coral-hibiscus-flower.jpg';
 
-// Indoor Plants
-const snakePlant = '/images/indoor/snake-plant-sansevieria.jpg';
-const succulents = '/images/indoor/succulent-garden-display.jpg';
+const garlicChivePhoto = '/images/product-specific/garlicChivePhoto.jpeg';
 
-// Garden Scenes
-const gardenerFlowers = '/images/garden-scenes/gardener-with-flowers.jpg';
-const mixedFlowering = '/images/garden-scenes/mixed-flowering-plants-garden.jpg';
-const gardenLandscape = '/images/garden-scenes/garden-landscape-overview.jpg';
-const mixedGarden = '/images/garden-scenes/mixed-garden-plants.jpg';
-const gardenPathway = '/images/garden-scenes/garden-pathway-plants.jpg';
-const pottedCollection = '/images/garden-scenes/potted-plants-collection.jpg';
+const eggplantPhoto = '/images/product-specific/eggplantPhoto.jpeg';
+
+const flamingKatyPhoto = '/images/product-specific/flamingKathyPhoto.jpeg';
+
+const jadePlantPhoto = '/images/product-specific/jadePlantPhoto.jpeg';
+
+const stonecropPhoto = '/images/product-specific/stonecropPhoto.jpeg';
+
+const turtleVinePhoto = '/images/product-specific/turtleVinePhoto.jpeg';
+
+const gardenLandscapePhoto = '/images/gallery/yellow-hibiscus-flower.jpg';
+
+const hibiscusCollagePhoto = '/images/gallery/pink-hibiscus-closeup.jpg';
+
+const pinkOrchidPhoto = '/images/flowers/orchids/pink-bauhinia-orchid-tree.jpg';
+const yellowOrchidPhoto = '/images/flowers/orchids/yellow-oncidium-orchid.jpg';
+
+const purpleOrchidPhoto = '/images/flowers/orchids/pink-orchid-flowers.jpg';
+
+const lettucePhoto = '/images/edible/vegetables/fresh-green-lettuce.jpg';
+const amaryllisPhoto = '/images/flowers/other/red-amaryllis-flowers.jpg';
+const mulberriesPhoto = '/images/edible/fruits/fresh-mulberries-branch.jpg';
+const hibiscusGardenPhoto = '/images/hero/garden-landscape-overview.jpg';
+const snakePlantPhoto = '/images/indoor/snake-plant-sansevieria.jpg';
+const dolipranePhoto = '/images/product-specific/dolipranePhoto.jpeg';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('about');
@@ -110,127 +103,127 @@ export default function App() {
 
   const galleryImages = [
     {
-      url: yellowOrchid,
+      url: orchidsPhoto,
       title: 'Exotic Orchids',
       category: 'Flowers',
     },
     {
-      url: peachHibiscus,
+      url: hibiscusPhoto,
       title: 'Beautiful Hibiscus',
       category: 'Flowers',
     },
     {
-      url: freshLettuce,
-      title: 'Fresh Lettuce',
+      url: chilliesPhoto,
+      title: 'Fresh Chillies',
       category: 'Harvest',
     },
     {
-      url: tomatoPlants,
-      title: 'Garden Vegetables',
+      url: auberginePhoto,
+      title: 'Garden Aubergine',
       category: 'Harvest',
     },
     {
-      url: leafyGreens,
-      title: 'Leafy Greens',
+      url: lemonsPhoto,
+      title: 'Homegrown Lemons',
       category: 'Harvest',
     },
     {
-      url: mulberries,
-      title: 'Garden Mulberries',
+      url: papayaPhoto,
+      title: 'Papaya Solo',
       category: 'Harvest',
     },
     {
-      url: pottedCollection,
+      url: productPhoto,
       title: 'Recycled Can Planters',
       category: 'Products',
     },
     {
-      url: gardenerFlowers,
+      url: plantSalePhoto,
       title: 'Plant Sale Day',
       category: 'Products',
     },
     {
-      url: gardenLandscape,
+      url: gardenLandscapePhoto,
       title: 'Recycled Bottle Planters',
       category: 'Garden',
     },
     {
-      url: herbGarden,
+      url: garlicChivePhoto,
       title: 'Garlic Chive',
       category: 'Products',
     },
     {
-      url: vegetableGarden,
+      url: eggplantPhoto,
       title: 'Eggplant Seedling',
       category: 'Products',
     },
     {
-      url: orangeTrumpet,
+      url: flamingKatyPhoto,
       title: 'Flaming Katy',
       category: 'Products',
     },
     {
-      url: succulents,
+      url: jadePlantPhoto,
       title: 'Jade Plant',
       category: 'Products',
     },
     {
-      url: succulents,
+      url: stonecropPhoto,
       title: 'Stonecrop',
       category: 'Products',
     },
     {
-      url: purpleMorningGlory,
+      url: turtleVinePhoto,
       title: 'Turtle Vine',
       category: 'Products',
     },
     {
-      url: pinkHibiscusGarden,
+      url: hibiscusCollagePhoto,
       title: 'Hibiscus Collection',
       category: 'Flowers',
     },
     {
-      url: pinkOrchid,
+      url: pinkOrchidPhoto,
       title: 'Pink Orchids',
       category: 'Flowers',
     },
     {
-      url: yellowOrchid,
+      url: yellowOrchidPhoto,
       title: 'Yellow Orchids',
       category: 'Flowers',
     },
     {
-      url: orchidPalm,
+      url: purpleOrchidPhoto,
       title: 'Purple Orchids',
       category: 'Flowers',
     },
     {
-      url: freshLettuce,
+      url: lettucePhoto,
       title: 'Fresh Lettuce',
       category: 'Harvest',
     },
     {
-      url: redAmaryllis,
+      url: amaryllisPhoto,
       title: 'Red Amaryllis',
       category: 'Flowers',
     },
     {
-      url: mulberries,
+      url: mulberriesPhoto,
       title: 'Garden Mulberries',
       category: 'Harvest',
     },
     {
-      url: pinkHibiscusGarden,
+      url: hibiscusGardenPhoto,
       title: 'Hibiscus Garden',
       category: 'Garden',
     },
     {
-      url: snakePlant,
+      url: snakePlantPhoto,
       title: 'Snake Plant',
       category: 'Products',
     },
     {
-      url: herbGarden,
+      url: dolipranePhoto,
       title: 'Doliprane Plant',
       category: 'Products',
     },
@@ -265,8 +258,8 @@ export default function App() {
       <div className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
         <div className="absolute inset-0">
           <ImageWithFallback
-            src={heroImage}
-            alt="Beautiful peach pink hibiscus flower"
+            src="https://images.unsplash.com/photo-1566364402522-3ba8c9ab1448?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmVlbiUyMHNwcm91dHxlbnwxfHx8fDE3NjEzNjg3OTl8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            alt="Plant growing"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40" />
@@ -321,7 +314,7 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center mb-8 sm:mb-16">
                 <div className="relative rounded-lg overflow-hidden shadow-2xl">
                   <ImageWithFallback
-                    src={gardenerFlowers}
+                    src={daniellePhoto}
                     alt="Danielle with her urban garden"
                     className="w-full h-auto object-cover"
                   />
@@ -348,8 +341,8 @@ export default function App() {
                 <Card className="overflow-hidden">
                   <div className="relative h-64">
                     <ImageWithFallback
-                      src={yellowOrchid}
-                      alt="Beautiful yellow oncidium orchids from the garden"
+                      src={orchidsPhoto}
+                      alt="Beautiful orchids from the garden"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -363,8 +356,8 @@ export default function App() {
                 <Card className="overflow-hidden">
                   <div className="relative h-64">
                     <ImageWithFallback
-                      src={peachHibiscus}
-                      alt="Vibrant peach pink hibiscus flower"
+                      src={hibiscusPhoto}
+                      alt="Vibrant hibiscus flower"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -545,7 +538,7 @@ export default function App() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
                 <div className="relative rounded-lg overflow-hidden shadow-xl">
                   <ImageWithFallback
-                    src={pottedCollection}
+                    src={productPhoto}
                     alt="Recycled can planters with plants"
                     className="w-full h-auto object-cover"
                   />
@@ -590,30 +583,30 @@ export default function App() {
                 <Card className="overflow-hidden">
                   <div className="relative h-80">
                     <ImageWithFallback
-                      src={freshLettuce}
-                      alt="Fresh green lettuce"
+                      src={chilliesPhoto}
+                      alt="Fresh green chillies"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <CardHeader>
-                    <CardTitle>Fresh Lettuce</CardTitle>
+                    <CardTitle>Fresh Chillies</CardTitle>
                     <CardDescription>
-                      Homegrown, organic lettuce bursting with flavor. Perfect for adding freshness to your salads!
+                      Homegrown, organic chillies bursting with flavor. Perfect for adding that special kick to your dishes!
                     </CardDescription>
                   </CardHeader>
                 </Card>
                 <Card className="overflow-hidden">
                   <div className="relative h-80">
                     <ImageWithFallback
-                      src={tomatoPlants}
-                      alt="Garden fresh vegetables and tomatoes"
+                      src={auberginePhoto}
+                      alt="Garden fresh aubergine and peppers"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <CardHeader>
                     <CardTitle>Garden Vegetables</CardTitle>
                     <CardDescription>
-                      Beautiful tomatoes and vegetables, grown naturally in rich soil. Experience the true taste of homegrown produce!
+                      Beautiful aubergines and peppers, grown naturally in rich soil. Experience the true taste of homegrown produce!
                     </CardDescription>
                   </CardHeader>
                 </Card>
@@ -683,7 +676,7 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={herbGarden}
+                    src={garlicChivePhoto}
                     alt="Garlic Chive in eco-friendly planter"
                     className="w-full h-full object-cover"
                   />
@@ -711,8 +704,8 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={vegetableGarden}
-                    alt="Eggplant seedling with companion plants"
+                    src={eggplantPhoto}
+                    alt="Eggplant seedling with companion succulents"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -739,8 +732,8 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={orangeTrumpet}
-                    alt="Flaming Katy cascading flowers"
+                    src={flamingKatyPhoto}
+                    alt="Flaming Katy cascading succulent arrangement"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -750,7 +743,7 @@ export default function App() {
                     <Badge className="bg-green-500 text-xs sm:text-sm whitespace-nowrap">Rs 25</Badge>
                   </div>
                   <CardDescription className="text-sm sm:text-base">
-                    A living waterfall of vibrant blooms! This stunning cascading plant creates a mesmerizing display of colorful flowers. Drought-tolerant, easy to care for, and absolutely Instagram-worthy! Perfect for hanging baskets, shelves, or adding vertical interest to your space.
+                    A living waterfall of tiny jade leaves! This stunning cascading succulent creates a mesmerizing curtain of lush greenery. Drought-tolerant, easy to care for, and absolutely Instagram-worthy! Perfect for hanging baskets, shelves, or adding vertical interest to your space.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
@@ -767,7 +760,7 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={succulents}
+                    src={jadePlantPhoto}
                     alt="Jade Plant succulent with thick rounded leaves"
                     className="w-full h-full object-cover"
                   />
@@ -795,8 +788,8 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={succulents}
-                    alt="Stonecrop succulent collection"
+                    src={stonecropPhoto}
+                    alt="Stonecrop succulent with star-shaped rosettes"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -806,7 +799,7 @@ export default function App() {
                     <Badge className="bg-green-500 text-xs sm:text-sm whitespace-nowrap">Rs 50</Badge>
                   </div>
                   <CardDescription className="text-sm sm:text-base">
-                    Nature's living art! This stunning Stonecrop showcases star-shaped rosettes in gorgeous hues from jade green to peachy coral. Incredibly drought-tolerant and multiplies readily. Perfect for rock gardens, containers, or as ground cover. Low maintenance beauty that rewards minimal care!
+                    Nature's living art! This stunning Stonecrop showcases star-shaped rosettes in gorgeous sunset hues from jade green to peachy coral. Incredibly drought-tolerant and multiplies readily. Perfect for rock gardens, containers, or as ground cover. Low maintenance beauty that rewards minimal care!
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
@@ -823,8 +816,8 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={purpleMorningGlory}
-                    alt="Turtle Vine with trailing leaves"
+                    src={turtleVinePhoto}
+                    alt="Turtle Vine with round trailing leaves"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -834,7 +827,7 @@ export default function App() {
                     <Badge className="bg-green-500 text-xs sm:text-sm whitespace-nowrap">Rs 25</Badge>
                   </div>
                   <CardDescription className="text-sm sm:text-base">
-                    Adorable trailing charmer! Named for its unique leaf shape with colorful stems. Perfect for hanging planters where it cascades gracefully, or as whimsical ground cover. Fast-growing and easy to propagate—just pinch and plant! Loves bright indirect light and brings fairy-tale charm to any space.
+                    Adorable trailing charmer! Named for its tiny turtle shell-shaped leaves with pink-purple stems. Perfect for hanging planters where it cascades gracefully, or as whimsical ground cover. Fast-growing and easy to propagate—just pinch and plant! Loves bright indirect light and brings fairy-tale charm to any space.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
@@ -851,8 +844,8 @@ export default function App() {
               <Card className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative h-48 sm:h-56 md:h-64">
                   <ImageWithFallback
-                    src={herbGarden}
-                    alt="Doliprane medicinal plant in recycled planter"
+                    src={dolipranePhoto}
+                    alt="Doliprane plant in recycled planter"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -1008,7 +1001,7 @@ export default function App() {
                   <CardContent className="space-y-2">
                     <p>• Like and share the video</p>
                     <p>• Comment your thoughts</p>
-                    <p>• Tag friends who care about Earth</p>
+                    <p>��� Tag friends who care about Earth</p>
                     <p>• Join our eco-community</p>
                   </CardContent>
                 </Card>
@@ -1105,8 +1098,8 @@ export default function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
                 <ImageWithFallback
-                  src={gardenLandscape}
-                  alt="Lush vegetable garden landscape"
+                  src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2ZWdldGFibGUlMjBnYXJkZW58ZW58MXx8fHwxNzYxMjk1NTg0fDA&ixlib=rb-4.1.0&q=80&w=1080"
+                  alt="Lush vegetable garden"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
@@ -1116,8 +1109,8 @@ export default function App() {
               </div>
               <div className="relative h-80 rounded-lg overflow-hidden shadow-lg">
                 <ImageWithFallback
-                  src={pinkHibiscusGarden}
-                  alt="Beautiful blooming hibiscus flowers"
+                  src="https://images.unsplash.com/photo-1530027644375-9c83053d392e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmbG93ZXIlMjBibG9vbWluZ3xlbnwxfHx8fDE3NjEzNjg4MDB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                  alt="Blooming flowers"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
