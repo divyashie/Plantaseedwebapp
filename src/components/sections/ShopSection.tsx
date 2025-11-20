@@ -90,7 +90,7 @@ export function ShopSection() {
           </svg>
           <div>
             <p className="text-sm sm:text-base md:text-lg">
-              <strong>Step 2:</strong> We accept payments via <strong>Juice by MCB Mauritius</strong>
+              <strong>Step 2:</strong> We accept payments via <strong>Juice by MCB Mauritius or cash on delivery</strong>
             </p>
             <p className="text-xs sm:text-sm text-gray-600">Secure and easy mobile payment</p>
           </div>
