@@ -29,6 +29,9 @@ const galleryImages = [
   { url: '/images/hero/garden-landscape-overview.jpg', title: 'Hibiscus Garden', category: 'Garden' },
   { url: '/images/indoor/snake-plant-sansevieria.jpg', title: 'Snake Plant', category: 'Products' },
   { url: '/images/product-specific/dolipranePhoto.jpeg', title: 'Doliprane Plant', category: 'Products' },
+  { url: '/images/flowers/other/purple-morning-glory.jpg', title: 'Purple Morning Glory', category: 'Flowers' },
+  { url: '/images/flowers/orchids/orchid-growing-palm-tree.jpg', title: 'Orchid Growing Palm Tree', category: 'Flowers' },
+  { url: '/images/gallery/fresh-green-lettuce.jpg', title: 'Fresh Green Lettuce', category: 'Harvest' },
 ];
 
 export function GallerySection() {
