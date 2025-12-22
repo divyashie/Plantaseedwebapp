@@ -4,7 +4,7 @@ import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { Separator } from '../ui/separator';
 
 const galleryImages = [
-  { url: '/images/flowers/orchids/orchidsPhoto.jpeg', title: 'Exotic Orchids', category: 'Flowers' },
+  { url: '/images/flowers/orchids/orchidsPhoto', title: 'Exotic Orchids', category: 'Flowers' },
   { url: '/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg', title: 'Beautiful Hibiscus', category: 'Flowers' },
   { url: '/images/gallery/mixed-flowering-plants-garden.jpg', title: 'Fresh Chillies', category: 'Harvest' },
   { url: '/images/gallery/potted-plants-collection.jpg', title: 'Garden Aubergine', category: 'Harvest' },
@@ -13,12 +13,12 @@ const galleryImages = [
   { url: '/images/indoor/succulent-garden-display.jpg', title: 'Recycled Can Planters', category: 'Products' },
   { url: '/images/flowers/other/orange-trumpet-vine-flowers.jpg', title: 'Plant Sale Day', category: 'Products' },
   { url: '/images/gallery/yellow-hibiscus-flower.jpg', title: 'Recycled Bottle Planters', category: 'Garden' },
-  { url: '/images/product-specific/garlicChivePhoto.jpeg', title: 'Garlic Chive', category: 'Products' },
-  { url: '/images/product-specific/eggplantPhoto.jpeg', title: 'Eggplant Seedling', category: 'Products' },
-  { url: '/images/product-specific/flamingKathyPhoto.jpeg', title: 'Flaming Katy', category: 'Products' },
-  { url: '/images/product-specific/jadePlantPhoto.jpeg', title: 'Jade Plant', category: 'Products' },
-  { url: '/images/product-specific/stonecropPhoto.jpeg', title: 'Stonecrop', category: 'Products' },
-  { url: '/images/product-specific/turtleVinePhoto.jpeg', title: 'Turtle Vine', category: 'Products' },
+  { url: '/images/product-specific/garlicChivePhoto', title: 'Garlic Chive', category: 'Products' },
+  { url: '/images/product-specific/eggplantPhoto', title: 'Eggplant Seedling', category: 'Products' },
+  { url: '/images/product-specific/flamingKathyPhoto', title: 'Flaming Katy', category: 'Products' },
+  { url: '/images/product-specific/jadePlantPhoto', title: 'Jade Plant', category: 'Products' },
+  { url: '/images/product-specific/stonecropPhoto', title: 'Stonecrop', category: 'Products' },
+  { url: '/images/product-specific/turtleVinePhoto', title: 'Turtle Vine', category: 'Products' },
   { url: '/images/gallery/pink-hibiscus-closeup.jpg', title: 'Hibiscus Collection', category: 'Flowers' },
   { url: '/images/flowers/orchids/pink-bauhinia-orchid-tree.jpg', title: 'Pink Orchids', category: 'Flowers' },
   { url: '/images/flowers/orchids/yellow-oncidium-orchid.jpg', title: 'Yellow Orchids', category: 'Flowers' },
@@ -28,10 +28,10 @@ const galleryImages = [
   { url: '/images/edible/fruits/fresh-mulberries-branch.jpg', title: 'Garden Mulberries', category: 'Harvest' },
   { url: '/images/hero/garden-landscape-overview.jpg', title: 'Hibiscus Garden', category: 'Garden' },
   { url: '/images/indoor/snake-plant-sansevieria.jpg', title: 'Snake Plant', category: 'Products' },
-  { url: '/images/product-specific/dolipranePhoto.jpeg', title: 'Doliprane Plant', category: 'Products' },
+  { url: '/images/product-specific/dolipranePhoto', title: 'Doliprane Plant', category: 'Products' },
   { url: '/images/flowers/other/purple-morning-glory.jpg', title: 'Purple Morning Glory', category: 'Flowers' },
   { url: '/images/flowers/orchids/orchid-growing-palm-tree.jpg', title: 'Orchid Growing Palm Tree', category: 'Flowers' },
-  { url: '/images/gallery/fresh-green-lettuce.jpg', title: 'Fresh Green Lettuce', category: 'Harvest' },
+  { url: '/images/product-specific/christmasDeco', title: 'Christmas Deco', category: 'Products' },
 ];
 
 export function GallerySection() {
