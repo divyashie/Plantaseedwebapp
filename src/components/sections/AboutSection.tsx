@@ -6,7 +6,7 @@ import { Separator } from '../ui/separator';
 import { MapPin, Mail, MessageCircle, Facebook } from 'lucide-react';
 
 const daniellePhoto = '/images/garden-scenes/gardener-with-flowers.jpg';
-const orchidsPhoto = '/images/flowers/orchids/orchidsPhoto.jpeg';
+const orchidsPhoto = '/images/flowers/orchids/orchidsPhoto';
 const hibiscusPhoto = '/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg';
 
 export function AboutSection() {
