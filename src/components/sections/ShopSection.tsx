@@ -70,6 +70,14 @@ const shopProducts = [
     description:
       'Spread festive cheer with our beautiful Christmas decoration! This charming seasonal arrangement brings holiday magic to your home. Perfect for adding a touch of nature-inspired elegance to your celebrations. Handcrafted with care in our eco-friendly recycled planters, it makes a wonderful gift or centerpiece for your holiday decor.',
   },
+  {
+    name: 'Christmas Gift',
+    price: 'Rs 50',
+    photo: '/images/product-specific/christmasGift',
+    message: "Hi Danielle! I'd like to pre-order a Christmas Gift for Rs 50",
+    description:
+      'The perfect holiday gift! This beautifully decorated plant arrangement features festive string lights, elegant ribbons, and natural pinecones. Each plant is carefully selected and arranged in our signature eco-friendly recycled tin can planters, creating a magical centerpiece that brings warmth and joy to any home. A thoughtful gift that keeps on growing!',
+  },
 ];
 
 const whatsappLink = (message: string) => `https://wa.me/23059878033?text=${encodeURIComponent(message)}`;

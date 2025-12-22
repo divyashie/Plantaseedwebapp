@@ -32,6 +32,7 @@ const galleryImages = [
   { url: '/images/flowers/other/purple-morning-glory.jpg', title: 'Purple Morning Glory', category: 'Flowers' },
   { url: '/images/flowers/orchids/orchid-growing-palm-tree.jpg', title: 'Orchid Growing Palm Tree', category: 'Flowers' },
   { url: '/images/product-specific/christmasDeco', title: 'Christmas Deco', category: 'Products' },
+  { url: '/images/product-specific/christmasGift', title: 'Christmas Gift', category: 'Products' },
 ];
 
 export function GallerySection() {
