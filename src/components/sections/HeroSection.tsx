@@ -7,8 +7,8 @@ export function HeroSection() {
     <div className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
       <div className="absolute inset-0">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1566364402522-3ba8c9ab1448?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmVlbiUyMHNwcm91dHxlbnwxfHx8fDE3NjEzNjg3OTl8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Plant growing"
+          src="/images/hero/gemini-generated-hero-image"
+          alt="Tropical garden landscape with palm trees and pool"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40" />
