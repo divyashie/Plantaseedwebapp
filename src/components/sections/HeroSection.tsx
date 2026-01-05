@@ -4,8 +4,8 @@ import { Badge } from '../ui/badge';
 
 export function HeroSection() {
   return (
-    <div className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden">
-      <div className="absolute inset-0">
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="absolute inset-0 z-0">
         <ImageWithFallback
           src="/images/hero/gemini-generated-hero-image"
           alt="Tropical garden landscape with palm trees and pool"
@@ -13,16 +13,22 @@ export function HeroSection() {
         />
         <div className="absolute inset-0 bg-black/40" />
       </div>
-      <div className="relative h-full flex flex-col items-center justify-center text-white px-4">
-        <Badge className="mb-3 sm:mb-4 bg-green-500 hover:bg-green-600 text-sm sm:text-base">
-          Growing Together
-        </Badge>
-        <h1 className="text-3xl sm:text-5xl md:text-7xl text-center mb-4 sm:mb-6 text-white">
-          Plant a Seed
-        </h1>
-        <p className="text-base sm:text-xl md:text-2xl text-center max-w-2xl text-white/90 px-4">
-          Discover the joy of growing your own plants from seed. A journey from soil to harvest.
-        </p>
+      <div className="relative z-10 min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="space-y-6 sm:space-y-8">
+            <div className="flex justify-center">
+              <Badge className="bg-green-500 hover:bg-green-600 text-sm sm:text-base px-4 py-2">
+                Growing Together
+              </Badge>
+            </div>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-tight">
+              Plant a Seed
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+              Discover the joy of growing your own plants from seed. A journey from soil to harvest.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

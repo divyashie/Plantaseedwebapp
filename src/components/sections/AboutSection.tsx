@@ -1,13 +1,140 @@
-import React from 'react';
+import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Button } from '../ui/button';
+import { Label } from '../ui/label';
 import { MapPin, Mail, MessageCircle, Facebook } from 'lucide-react';
 
 const daniellePhoto = '/images/garden-scenes/gardener-with-flowers.jpg';
 const orchidsPhoto = '/images/flowers/orchids/orchidsPhoto';
 const hibiscusPhoto = '/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg';
+
+function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // EmailJS configuration - Replace these with your actual EmailJS credentials
+  // Get these from: https://www.emailjs.com/
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // Initialize EmailJS with your public key
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+
+      // Send email using EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_email: 'daniellediemahave@gmail.com',
+        }
+      );
+
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      
+      // Reset status message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      setSubmitStatus('error');
+      
+      // Reset error message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Your name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="your@email.com"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="message">Message</Label>
+        <Textarea
+          id="message"
+          name="message"
+          placeholder="Tell us about your journey..."
+          value={formData.message}
+          onChange={handleChange}
+          required
+          rows={6}
+        />
+      </div>
+      {submitStatus === 'success' && (
+        <div className="p-4 bg-green-50 border border-green-200 rounded-md text-green-800 text-sm">
+          Thank you for your message! We'll get back to you soon.
+        </div>
+      )}
+      {submitStatus === 'error' && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-md text-red-800 text-sm">
+          Sorry, there was an error sending your message. Please try again or contact us directly at daniellediemahave@gmail.com
+        </div>
+      )}
+      <Button 
+        type="submit" 
+        className="w-full bg-green-600 hover:bg-green-700 mt-2"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? 'Sending...' : 'Send Message'}
+      </Button>
+    </form>
+  );
+}
 
 export function AboutSection() {
   return (
@@ -89,33 +216,18 @@ export function AboutSection() {
         <div className="text-center mb-8 sm:mb-12">
           <h3 className="text-3xl sm:text-4xl mb-3 sm:mb-4 font-serif">Get in Touch</h3>
           <p className="text-base sm:text-lg text-gray-600">
-            Have questions about your garden? We're here to help.
+            Have questions or want to share your gardening journey? We'd love to hear from you!
           </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left Panel - Visit Us with Map (takes maximum space) */}
+          {/* Left Panel - Contact Form */}
           <Card className="flex-1 lg:flex-[2] rounded-xl shadow-sm border border-gray-100">
             <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                <MapPin className="w-5 h-5 text-green-600" />
-                Visit Us
-              </CardTitle>
-              <CardDescription className="text-base mt-2">Cascavelle, Mauritius</CardDescription>
+              <CardTitle className="text-xl font-semibold">Get In Touch</CardTitle>
             </CardHeader>
-            <CardContent className="pt-0">
-              <div className="w-full h-80 sm:h-96 lg:h-full rounded-lg overflow-hidden border border-gray-200">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3743.9841392847595!2d57.40736!3d-20.24932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x217c5b5e5e5e5e5e%3A0x5e5e5e5e5e5e5e5e!2sAvenue%20Camelia%2C%20Cascavelle%2C%20Mauritius!5e0!3m2!1sen!2s!4v1234567890"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Plant A Seed Location"
-                />
-              </div>
+            <CardContent>
+              <ContactForm />
             </CardContent>
           </Card>
 
