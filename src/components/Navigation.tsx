@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import { Menu, X } from "lucide-react";
 
 interface NavigationProps {
   activeTab: string;
@@ -9,6 +10,7 @@ interface NavigationProps {
 const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +43,7 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
 
   const handleNavClick = (value: string) => {
     onTabChange(value);
+    setIsMobileMenuOpen(false); // Close mobile menu after selection
 
     // Scroll to content section smoothly
     const contentSection = document.querySelector('.max-w-7xl');
@@ -68,14 +71,14 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
             <span className="font-bold text-lg text-white hidden sm:inline">Plant A Seed</span>
           </div>
 
-          {/* Navigation Items - Always Horizontal */}
-          <div className="flex items-center gap-1">
+          {/* Desktop Navigation - Hidden on Mobile */}
+          <div className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
               <Button
                 key={item.name}
                 variant="ghost"
                 onClick={() => handleNavClick(item.value)}
-                className={`text-white hover:text-green-200 hover:bg-green-800 text-sm sm:text-base px-3 sm:px-4 py-2 h-auto font-medium transition-colors ${
+                className={`text-white hover:text-green-200 hover:bg-green-800 text-base px-4 py-2 h-auto font-medium transition-colors ${
                   activeTab === item.value ? "text-green-200 bg-green-800" : ""
                 }`}
               >
@@ -83,7 +86,36 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               </Button>
             ))}
           </div>
+
+          {/* Mobile Hamburger Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-white hover:text-green-200 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-green-800 py-2">
+            <div className="flex flex-col gap-1">
+              {navItems.map((item) => (
+                <Button
+                  key={item.name}
+                  variant="ghost"
+                  onClick={() => handleNavClick(item.value)}
+                  className={`text-white hover:text-green-200 hover:bg-green-800 text-base px-4 py-3 h-auto font-medium transition-colors w-full justify-start ${
+                    activeTab === item.value ? "text-green-200 bg-green-800" : ""
+                  }`}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
