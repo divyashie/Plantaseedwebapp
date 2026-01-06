@@ -28,9 +28,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-      <div className="pt-20">
-        <HeroSection />
-      </div>
+      <HeroSection />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 py-8 sm:py-12 md:py-16">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
