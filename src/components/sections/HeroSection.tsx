@@ -4,7 +4,7 @@ import { Badge } from '../ui/badge';
 
 export function HeroSection() {
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative overflow-hidden pt-20" style={{ minHeight: 'calc(100vh)' }}>
       <div className="absolute inset-0 z-0">
         <ImageWithFallback
           src="/images/hero/gemini-generated-hero-image"
@@ -13,7 +13,7 @@ export function HeroSection() {
         />
         <div className="absolute inset-0 bg-black/40" />
       </div>
-      <div className="relative z-10 min-h-screen flex items-center justify-center">
+      <div className="relative z-10 flex items-center justify-center" style={{ minHeight: 'calc(100vh - 5rem)' }}>
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-6 sm:space-y-8">
             <div className="flex justify-center">
