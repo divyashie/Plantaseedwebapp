@@ -8,7 +8,7 @@ interface NavigationProps {
 }
 
 const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isCompact, setIsCompact] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -16,13 +16,15 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Show nav when scrolling up or at top
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        setIsVisible(true);
-      }
-      // Hide nav when scrolling down
-      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
+      if (currentScrollY < 50) {
+        setIsCompact(false);
+        setIsMobileMenuOpen(false);
+      } else if (currentScrollY < lastScrollY) {
+        setIsCompact(false);
+        setIsMobileMenuOpen(false);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsCompact(true);
+        setIsMobileMenuOpen(false);
       }
 
       setLastScrollY(currentScrollY);
@@ -31,6 +33,7 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
   const navItems = [
     { name: "About", value: "about" },
     { name: "eBook", value: "ebook" },
@@ -43,45 +46,59 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
 
   const handleNavClick = (value: string) => {
     onTabChange(value);
-    setIsMobileMenuOpen(false); // Close mobile menu after selection
+    setIsMobileMenuOpen(false);
 
-    // Scroll to content section smoothly
     const contentSection = document.querySelector('.max-w-7xl');
     if (contentSection) {
       const navHeight = 80;
       const elementPosition = contentSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
   };
 
+  // Check if we're on a large screen (desktop)
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  // Show hamburger on mobile always, or on desktop when compact
+  const showHamburger = !isDesktop || isCompact;
+  // Show nav items on desktop when not compact
+  const showNavItems = isDesktop && !isCompact;
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 bg-green-900 text-white border-b border-green-800 shadow-md transition-transform duration-300 ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}
+      className="fixed top-0 left-0 right-0 bg-green-900 text-white border-b border-green-800 shadow-md"
       style={{ zIndex: 9999 }}
     >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <img src="/images/logo.jpeg" alt="Plant A Seed Logo" className="w-10 h-10 object-contain" />
-            <span className="font-bold text-lg text-white hidden sm:inline">Plant A Seed</span>
-          </div>
+      <div className="flex items-center h-16 lg:h-20">
+        {/* Logo - at the left edge */}
+        <button
+          onClick={() => handleNavClick('about')}
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity pl-1"
+        >
+          <img src="/images/logo.jpeg" alt="Plant A Seed Logo" className="w-10 h-10 object-contain" />
+          <span className="font-bold text-lg text-white hidden sm:inline">Plant A Seed</span>
+        </button>
 
-          {/* Desktop Navigation - Hidden on Mobile */}
-          <div className="hidden lg:flex items-center gap-1">
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Desktop Nav Items - only when not compact */}
+        {showNavItems && (
+          <div className="flex items-center gap-1 pr-4">
             {navItems.map((item) => (
               <Button
                 key={item.name}
                 variant="ghost"
                 onClick={() => handleNavClick(item.value)}
-                className={`text-white hover:text-green-200 hover:bg-green-800 text-base px-4 py-2 h-auto font-medium transition-colors ${
+                className={`text-white hover:text-green-200 hover:bg-green-800 text-sm px-3 py-2 h-auto font-medium transition-colors ${
                   activeTab === item.value ? "text-green-200 bg-green-800" : ""
                 }`}
               >
@@ -89,37 +106,39 @@ const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               </Button>
             ))}
           </div>
+        )}
 
-          {/* Mobile Hamburger Menu Button */}
+        {/* Hamburger - on mobile always, on desktop when compact */}
+        {showHamburger && (
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-white hover:text-green-200 transition-colors"
+            className="p-2 mr-2 lg:mr-4 text-white hover:text-green-200 transition-colors"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-green-800 py-2 bg-green-900">
-            <div className="flex flex-col gap-1">
-              {navItems.map((item) => (
-                <Button
-                  key={item.name}
-                  variant="ghost"
-                  onClick={() => handleNavClick(item.value)}
-                  className={`text-white hover:text-green-200 hover:bg-green-800 text-base px-4 py-3 h-auto font-medium transition-colors w-full justify-start ${
-                    activeTab === item.value ? "text-green-200 bg-green-800" : ""
-                  }`}
-                >
-                  {item.name}
-                </Button>
-              ))}
-            </div>
-          </div>
         )}
       </div>
+
+      {/* Dropdown Menu */}
+      {isMobileMenuOpen && (
+        <div className="border-t border-green-800 bg-green-900">
+          <div className="flex flex-col py-2">
+            {navItems.map((item) => (
+              <Button
+                key={item.name}
+                variant="ghost"
+                onClick={() => handleNavClick(item.value)}
+                className={`text-white hover:text-green-200 hover:bg-green-800 text-base px-6 py-3 h-auto font-medium transition-colors w-full justify-start rounded-none ${
+                  activeTab === item.value ? "text-green-200 bg-green-800" : ""
+                }`}
+              >
+                {item.name}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
