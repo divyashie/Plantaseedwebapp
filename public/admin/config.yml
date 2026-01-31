@@ -2,8 +2,6 @@ backend:
   name: github
   repo: divyashie/Plantaseedwebapp
   branch: main
-  base_url: https://plantaseed.store
-  auth_endpoint: /api/auth
 
 # When using the default proxy server port
 local_backend: true

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OAuth Callback</title>
+</head>
+<body>
+  <script>
+    // GitHub OAuth callback handler for Decap CMS
+    (function() {
+      // Get the message from the URL hash (implicit grant) or wait for postMessage
+      function handleAuth() {
+        var hash = window.location.hash;
+        var search = window.location.search;
+
+        // Check for access_token in hash (implicit flow)
+        if (hash && hash.includes('access_token')) {
+          var params = new URLSearchParams(hash.substring(1));
+          var token = params.get('access_token');
+          if (token && window.opener) {
+            window.opener.postMessage(
+              'authorization:github:success:' + JSON.stringify({token: token, provider: 'github'}),
+              '*'
+            );
+            window.close();
+            return;
+          }
+        }
+
+        // For code flow, the API handles this - just show status
+        document.body.innerHTML = '<p>Processing authentication...</p>';
+      }
+
+      handleAuth();
+    })();
+  </script>
+</body>
+</html>
