@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
     const token = data.access_token;
 
-    // Send the token back to Decap CMS
+    // Send the token back to Decap CMS using their expected format
     const html = `
 <!DOCTYPE html>
 <html>
@@ -39,20 +39,25 @@ export default async function handler(req, res) {
   <title>Authenticating...</title>
 </head>
 <body>
-  <p>Authenticating with GitHub...</p>
+  <p id="status">Authenticating with GitHub...</p>
   <script>
     (function() {
-      const token = "${token}";
-      const provider = "github";
+      var token = "${token}";
+      var provider = "github";
+      var message = "authorization:" + provider + ":success:" + JSON.stringify({token: token, provider: provider});
+
+      var statusEl = document.getElementById("status");
 
       if (window.opener) {
-        window.opener.postMessage(
-          "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
-          "*"
-        );
-        setTimeout(function() { window.close(); }, 1000);
+        statusEl.textContent = "Sending credentials to CMS...";
+        // Try posting to opener
+        window.opener.postMessage(message, "*");
+        statusEl.textContent = "Success! This window will close.";
+        setTimeout(function() {
+          window.close();
+        }, 500);
       } else {
-        document.body.innerHTML = "<p>Authentication successful! You can close this window.</p>";
+        statusEl.textContent = "Error: No opener window found. Please try again from the CMS.";
       }
     })();
   </script>
