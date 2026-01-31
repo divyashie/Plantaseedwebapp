@@ -1,0 +1,11 @@
+{
+  "menuItems": [
+    { "label": "About", "value": "about", "order": 1, "visible": true },
+    { "label": "eBook", "value": "ebook", "order": 2, "visible": true },
+    { "label": "Products", "value": "products", "order": 3, "visible": true },
+    { "label": "Shop", "value": "shop", "order": 4, "visible": true },
+    { "label": "Music", "value": "music", "order": 5, "visible": true },
+    { "label": "Guide", "value": "guide", "order": 6, "visible": true },
+    { "label": "Gallery", "value": "gallery", "order": 7, "visible": true }
+  ]
+}
