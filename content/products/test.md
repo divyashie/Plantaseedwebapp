@@ -6,7 +6,7 @@ description: Buy your best test product!
 image: /images/uploads/logo.jpeg
 whatsappMessage: You got this!
 available: true
-featured: false
-order: 6
+featured: true
+order: 7
 category: seeds
 ---
