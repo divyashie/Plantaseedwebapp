@@ -1,0 +1,31 @@
+{
+  "sectionTitle": "Meet Danielle",
+  "sectionSubtitle": "Passionate gardener and plant enthusiast",
+  "mainPhoto": "/images/garden-scenes/gardener-with-flowers.jpg",
+  "mainPhotoAlt": "Danielle with her urban garden",
+  "heading": "Growing Dreams, One Seed at a Time",
+  "paragraph1": "Hi! I'm Danielle, and I believe that anyone can create their own green paradise, no matter how small the space. My journey started with a few recycled containers and a handful of seeds, and it blossomed into a thriving urban garden.",
+  "paragraph2": "Through Plant a Seed, I want to share the joy and fulfillment that comes from nurturing plants from their very beginning. Whether you're growing flowers that brighten your day or vegetables that nourish your family, every seed planted is a step toward a greener future.",
+  "badges": [
+    { "text": "Urban Gardening", "color": "green" },
+    { "text": "Flower Enthusiast", "color": "pink" },
+    { "text": "Sustainable Living", "color": "yellow" },
+    { "text": "Community Builder", "color": "blue" }
+  ],
+  "featureCards": [
+    {
+      "title": "Orchid Collection",
+      "description": "These delicate beauties are a testament to patience and care. Orchids may seem challenging, but with the right approach, they reward you with stunning blooms.",
+      "image": "/images/flowers/orchids/orchidsPhoto.jpeg",
+      "imageAlt": "Beautiful orchids from the garden"
+    },
+    {
+      "title": "Tropical Treasures",
+      "description": "Hibiscus flowers bring a touch of the tropics to any garden. Their vibrant colors and unique petals make every bloom a celebration.",
+      "image": "/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg",
+      "imageAlt": "Vibrant hibiscus flower"
+    }
+  ],
+  "contactTitle": "Get in Touch",
+  "contactSubtitle": "Have questions or want to share your gardening journey? We'd love to hear from you!"
+}

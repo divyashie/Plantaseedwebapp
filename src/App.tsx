@@ -11,6 +11,7 @@ import { MusicSection } from './components/sections/MusicSection';
 import { GuideSection } from './components/sections/GuideSection';
 import { GallerySection } from './components/sections/GallerySection';
 import { Analytics } from '@vercel/analytics/react';
+import { settings } from './lib/content';
 
 const tabConfig = [
   { value: 'about', label: 'About', Component: AboutSection },
@@ -43,11 +44,11 @@ export default function App() {
       <footer className="bg-green-900 text-white py-12 mt-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <Sprout className="w-12 h-12 mx-auto mb-4" />
-          <h3 className="text-2xl mb-2">Plant a Seed</h3>
+          <h3 className="text-2xl mb-2">{settings.general.siteName}</h3>
           <p className="text-green-200 max-w-2xl mx-auto">
-            Growing plants from seeds is a rewarding journey. Start small, be patient, and enjoy watching life grow.
+            {settings.general.footerText}
           </p>
-          <p className="text-green-300 mt-6 text-sm">© 2025 Plant a Seed. Cultivating green thumbs everywhere.</p>
+          <p className="text-green-300 mt-6 text-sm">© {settings.general.copyright}</p>
         </div>
       </footer>
       <Analytics />

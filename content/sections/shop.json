@@ -1,0 +1,24 @@
+{
+  "sectionTitle": "Shop Our Products",
+  "sectionSubtitle": "Pre-order your favorite plants, planters, and fresh produce",
+  "howToOrderTitle": "How to Order",
+  "orderSteps": [
+    {
+      "title": "Step 1",
+      "description": "Click \"Pre-Order on WhatsApp\" on any product",
+      "additionalInfo": ""
+    },
+    {
+      "title": "Step 2",
+      "description": "We accept payments via Juice by MCB Mauritius or cash on delivery",
+      "additionalInfo": "Secure and easy mobile payment"
+    },
+    {
+      "title": "Step 3",
+      "description": "Pick up at Cascavelle Mall",
+      "additionalInfo": ""
+    }
+  ],
+  "questionsTitle": "Questions About Your Order?",
+  "questionsText": "Feel free to reach out to us on WhatsApp for any questions about availability, delivery, or custom orders."
+}

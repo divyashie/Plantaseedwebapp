@@ -1,0 +1,300 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# When using the default proxy server port
+local_backend: true
+
+# Media files configuration
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Site settings
+site_url: https://plantaseed.com
+display_url: https://plantaseed.com
+logo_url: /images/logo.png
+
+# Slug settings
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# Collections
+collections:
+  # ============================================
+  # SITE SETTINGS
+  # ============================================
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "general"
+        label: "General Settings"
+        file: "content/settings/general.json"
+        fields:
+          - { label: "Site Name", name: "siteName", widget: "string", default: "Plant a Seed" }
+          - { label: "Site Tagline", name: "tagline", widget: "string" }
+          - { label: "Logo", name: "logo", widget: "image" }
+          - { label: "Footer Text", name: "footerText", widget: "text" }
+          - { label: "Copyright Text", name: "copyright", widget: "string" }
+
+      - name: "contact"
+        label: "Contact Information"
+        file: "content/settings/contact.json"
+        fields:
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "WhatsApp Number", name: "whatsapp", widget: "string" }
+          - { label: "WhatsApp Display", name: "whatsappDisplay", widget: "string" }
+          - { label: "Facebook URL", name: "facebook", widget: "string" }
+          - { label: "Facebook Display Name", name: "facebookDisplay", widget: "string" }
+          - { label: "Pickup Location", name: "pickupLocation", widget: "string" }
+          - { label: "Pickup Location Map URL", name: "pickupMapUrl", widget: "string" }
+
+      - name: "navigation"
+        label: "Navigation Menu"
+        file: "content/settings/navigation.json"
+        fields:
+          - label: "Menu Items"
+            name: "menuItems"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Tab Value", name: "value", widget: "string" }
+              - { label: "Order", name: "order", widget: "number" }
+              - { label: "Visible", name: "visible", widget: "boolean", default: true }
+
+  # ============================================
+  # HERO SECTION
+  # ============================================
+  - name: "hero"
+    label: "Hero Section"
+    files:
+      - name: "hero-content"
+        label: "Hero Content"
+        file: "content/sections/hero.json"
+        fields:
+          - { label: "Badge Text", name: "badge", widget: "string", default: "Growing Together" }
+          - { label: "Main Title", name: "title", widget: "string", default: "Plant a Seed" }
+          - { label: "Tagline Line 1", name: "tagline1", widget: "string" }
+          - { label: "Tagline Line 2", name: "tagline2", widget: "string" }
+          - { label: "Button Text", name: "buttonText", widget: "string", default: "Start Your Journey" }
+          - { label: "Button Link (Tab)", name: "buttonLink", widget: "string", default: "about" }
+          - { label: "Hero Background Image", name: "heroImage", widget: "image" }
+
+  # ============================================
+  # ABOUT SECTION
+  # ============================================
+  - name: "about"
+    label: "About Section"
+    files:
+      - name: "about-content"
+        label: "About Content"
+        file: "content/sections/about.json"
+        fields:
+          - { label: "Section Title", name: "sectionTitle", widget: "string", default: "Meet Danielle" }
+          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+          - { label: "Main Photo", name: "mainPhoto", widget: "image" }
+          - { label: "Main Photo Alt Text", name: "mainPhotoAlt", widget: "string" }
+          - { label: "Heading", name: "heading", widget: "string" }
+          - { label: "Paragraph 1", name: "paragraph1", widget: "text" }
+          - { label: "Paragraph 2", name: "paragraph2", widget: "text" }
+          - label: "Badges"
+            name: "badges"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "Color", name: "color", widget: "select", options: ["green", "pink", "yellow", "blue", "purple", "orange"] }
+          - label: "Feature Cards"
+            name: "featureCards"
+            widget: "list"
+            max: 2
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Image Alt", name: "imageAlt", widget: "string" }
+          - { label: "Contact Section Title", name: "contactTitle", widget: "string", default: "Get in Touch" }
+          - { label: "Contact Section Subtitle", name: "contactSubtitle", widget: "text" }
+
+  # ============================================
+  # SHOP SECTION
+  # ============================================
+  - name: "shop"
+    label: "Shop Section"
+    files:
+      - name: "shop-settings"
+        label: "Shop Settings"
+        file: "content/sections/shop.json"
+        fields:
+          - { label: "Section Title", name: "sectionTitle", widget: "string", default: "Shop Our Products" }
+          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+          - { label: "How to Order Title", name: "howToOrderTitle", widget: "string", default: "How to Order" }
+          - label: "Order Steps"
+            name: "orderSteps"
+            widget: "list"
+            fields:
+              - { label: "Step Title", name: "title", widget: "string" }
+              - { label: "Step Description", name: "description", widget: "text" }
+              - { label: "Additional Info", name: "additionalInfo", widget: "string", required: false }
+          - { label: "Questions Section Title", name: "questionsTitle", widget: "string" }
+          - { label: "Questions Section Text", name: "questionsText", widget: "text" }
+
+  - name: "products"
+    label: "Products"
+    folder: "content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Product Name", name: "title", widget: "string" }
+      - { label: "Price (number only)", name: "price", widget: "number", value_type: "int" }
+      - { label: "Currency", name: "currency", widget: "string", default: "Rs" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Product Image", name: "image", widget: "image" }
+      - { label: "WhatsApp Pre-order Message", name: "whatsappMessage", widget: "string" }
+      - { label: "Available for Sale", name: "available", widget: "boolean", default: true }
+      - { label: "Featured Product", name: "featured", widget: "boolean", default: false }
+      - { label: "Display Order", name: "order", widget: "number", default: 0 }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Plants", value: "plants" }
+          - { label: "Seeds", value: "seeds" }
+          - { label: "Succulents", value: "succulents" }
+          - { label: "Herbs", value: "herbs" }
+          - { label: "Vegetables", value: "vegetables" }
+          - { label: "Seasonal", value: "seasonal" }
+
+  # ============================================
+  # GALLERY SECTION
+  # ============================================
+  - name: "gallery-settings"
+    label: "Gallery Settings"
+    files:
+      - name: "gallery-config"
+        label: "Gallery Configuration"
+        file: "content/sections/gallery.json"
+        fields:
+          - { label: "Section Title", name: "sectionTitle", widget: "string", default: "Inspiration Gallery" }
+          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+          - label: "Featured Images (Bottom)"
+            name: "featuredImages"
+            widget: "list"
+            max: 2
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Subtitle", name: "subtitle", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Image Alt", name: "imageAlt", widget: "string" }
+
+  - name: "gallery"
+    label: "Gallery Images"
+    folder: "content/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Flowers", value: "Flowers" }
+          - { label: "Harvest", value: "Harvest" }
+          - { label: "Products", value: "Products" }
+          - { label: "Garden", value: "Garden" }
+      - { label: "Display Order", name: "order", widget: "number", default: 0 }
+
+  # ============================================
+  # GUIDE SECTION
+  # ============================================
+  - name: "guide-settings"
+    label: "Guide Settings"
+    files:
+      - name: "guide-config"
+        label: "Guide Configuration"
+        file: "content/sections/guide.json"
+        fields:
+          - { label: "Section Title", name: "sectionTitle", widget: "string", default: "Step-by-Step Planting Guide" }
+          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+          - { label: "FAQ Title", name: "faqTitle", widget: "string", default: "Frequently Asked Questions" }
+
+  - name: "planting-steps"
+    label: "Planting Steps"
+    folder: "content/guide/steps"
+    create: true
+    slug: "step-{{step}}-{{slug}}"
+    fields:
+      - { label: "Step Number", name: "step", widget: "number", value_type: "int", min: 1 }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - label: "Icon"
+        name: "icon"
+        widget: "select"
+        options:
+          - { label: "Shovel", value: "Shovel" }
+          - { label: "Sprout", value: "Sprout" }
+          - { label: "Leaf", value: "Leaf" }
+          - { label: "Droplets (Water)", value: "Droplets" }
+          - { label: "Sun", value: "Sun" }
+          - { label: "Heart", value: "Heart" }
+          - { label: "Flower", value: "Flower2" }
+          - { label: "Tree", value: "TreeDeciduous" }
+      - { label: "Image", name: "image", widget: "image" }
+
+  - name: "faqs"
+    label: "FAQs"
+    folder: "content/guide/faqs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Question", name: "question", widget: "string" }
+      - { label: "Answer", name: "answer", widget: "text" }
+      - { label: "Display Order", name: "order", widget: "number", default: 0 }
+
+  # ============================================
+  # MUSIC SECTION
+  # ============================================
+  - name: "music-settings"
+    label: "Music Settings"
+    files:
+      - name: "music-config"
+        label: "Music Configuration"
+        file: "content/sections/music.json"
+        fields:
+          - { label: "Section Title", name: "sectionTitle", widget: "string" }
+          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+
+  - name: "videos"
+    label: "Videos"
+    folder: "content/music"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "YouTube Video ID", name: "videoId", widget: "string", hint: "e.g., dQw4w9WgXcQ from youtube.com/watch?v=dQw4w9WgXcQ" }
+      - { label: "Display Order", name: "order", widget: "number", default: 0 }
+
+  # ============================================
+  # EBOOK SECTION
+  # ============================================
+  - name: "ebook"
+    label: "eBook Section"
+    files:
+      - name: "ebook-content"
+        label: "eBook Content"
+        file: "content/sections/ebook.json"
+        fields:
+          - { label: "Section Title", name: "sectionTitle", widget: "string" }
+          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+          - { label: "eBook Title", name: "ebookTitle", widget: "string" }
+          - { label: "eBook Description", name: "ebookDescription", widget: "markdown" }
+          - { label: "eBook Cover Image", name: "coverImage", widget: "image" }
+          - { label: "Download Button Text", name: "buttonText", widget: "string" }
+          - { label: "Download URL", name: "downloadUrl", widget: "string" }
+          - label: "Features"
+            name: "features"
+            widget: "list"
+            fields:
+              - { label: "Feature Text", name: "text", widget: "string" }

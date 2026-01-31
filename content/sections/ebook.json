@@ -1,0 +1,15 @@
+{
+  "sectionTitle": "Free eBook",
+  "sectionSubtitle": "Learn the secrets of successful seed planting",
+  "ebookTitle": "The Complete Guide to Planting Seeds",
+  "ebookDescription": "This comprehensive guide covers everything you need to know about growing plants from seeds, from soil preparation to harvesting your first crops.",
+  "coverImage": "/images/garden-scenes/garden-landscape-overview.jpg",
+  "buttonText": "Download Free eBook",
+  "downloadUrl": "#",
+  "features": [
+    { "text": "Step-by-step planting instructions" },
+    { "text": "Seasonal planting calendar" },
+    { "text": "Troubleshooting common problems" },
+    { "text": "Tips for tropical climates" }
+  ]
+}

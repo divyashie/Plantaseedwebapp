@@ -1,0 +1,18 @@
+{
+  "sectionTitle": "Inspiration Gallery",
+  "sectionSubtitle": "Explore beautiful examples of successful seed planting and gardens",
+  "featuredImages": [
+    {
+      "title": "Thriving Garden",
+      "subtitle": "The result of patience and care",
+      "image": "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2ZWdldGFibGUlMjBnYXJkZW58ZW58MXx8fHwxNzYxMjk1NTg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageAlt": "Lush vegetable garden"
+    },
+    {
+      "title": "Beautiful Blooms",
+      "subtitle": "From tiny seeds to stunning flowers",
+      "image": "https://images.unsplash.com/photo-1530027644375-9c83053d392e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmbG93ZXIlMjBibG9vbWluZ3xlbnwxfHx8fDE3NjEzNjg4MDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageAlt": "Blooming flowers"
+    }
+  ]
+}
