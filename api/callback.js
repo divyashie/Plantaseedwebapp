@@ -1,102 +1,79 @@
 /**
- * OAuth callback for Sveltia/Decap CMS with GitHub
- * Uses the official Netlify CMS/Decap CMS OAuth handshake protocol
+ * OAuth callback for Sveltia CMS with GitHub
+ * Matches the official sveltia-cms-auth postMessage protocol exactly
  */
 
 export default async function handler(req, res) {
   const { code } = req.query;
+  const provider = 'github';
 
   if (!code) {
-    return res.status(400).send('No code provided');
+    return sendResponse(res, provider, { error: 'Failed to receive an authorization code.' });
+  }
+
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    return sendResponse(res, provider, { error: 'OAuth app credentials are not configured.' });
+  }
+
+  let tokenResponse;
+
+  try {
+    tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code,
+        client_id: clientId,
+        client_secret: clientSecret,
+      }),
+    });
+  } catch {
+    return sendResponse(res, provider, { error: 'Failed to request an access token.' });
   }
 
   try {
-    const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        client_id: process.env.GITHUB_CLIENT_ID,
-        client_secret: process.env.GITHUB_CLIENT_SECRET,
-        code,
-      }),
-    });
+    const { access_token: token, error } = await tokenResponse.json();
 
-    const data = await tokenResponse.json();
-
-    if (data.error) {
-      const html = `<!DOCTYPE html><html><body>
-<script>
-  if (window.opener) {
-    window.opener.postMessage("authorization:github:error:" + ${JSON.stringify(JSON.stringify({ message: data.error_description || data.error }))}, "*");
-  }
-  document.body.textContent = "Error: ${data.error_description || data.error}";
-</script>
-</body></html>`;
-      res.setHeader('Content-Type', 'text/html');
-      return res.send(html);
+    if (error || !token) {
+      return sendResponse(res, provider, { error: error || 'No access token received.' });
     }
 
-    const token = data.access_token;
-
-    // Use the official CMS OAuth handshake protocol:
-    // 1. Send "authorizing:github" to opener
-    // 2. Wait for opener to respond (confirming it's listening)
-    // 3. Send "authorization:github:success:{token}" using the origin from opener's response
-    const html = `<!DOCTYPE html>
-<html>
-<head><title>CMS Authentication</title></head>
-<body>
-<p id="status">Completing authentication...</p>
-<script>
-(function() {
-  var statusEl = document.getElementById("status");
-  var token = ${JSON.stringify(token)};
-  var provider = "github";
-
-  if (!window.opener) {
-    statusEl.textContent = "Error: No popup opener found. Make sure popups are allowed for this site.";
-    return;
+    return sendResponse(res, provider, { token });
+  } catch {
+    return sendResponse(res, provider, { error: 'Received malformed response from GitHub.' });
   }
+}
 
-  // Step 1: Listen for the CMS to respond
-  function receiveMessage(e) {
-    console.log("receiveMessage", e);
-    // Step 2: Send the token back to the CMS using the origin from the message
-    window.opener.postMessage(
-      "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
-      e.origin
-    );
-    window.removeEventListener("message", receiveMessage, false);
-    statusEl.textContent = "Authentication successful! This window will close.";
-    setTimeout(function() { window.close(); }, 1000);
-  }
+function sendResponse(res, provider, { token, error }) {
+  const state = error ? 'error' : 'success';
+  const content = error
+    ? JSON.stringify({ provider, error })
+    : JSON.stringify({ provider, token });
 
-  window.addEventListener("message", receiveMessage, false);
-
-  // Step 0: Signal to the CMS that we're authorizing
-  window.opener.postMessage("authorizing:" + provider, "*");
-
-  // Fallback: if no response after 5 seconds, try sending directly
-  setTimeout(function() {
-    window.opener.postMessage(
-      "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
-      "*"
-    );
-    statusEl.textContent = "Authentication sent. You may close this window.";
-    setTimeout(function() { window.close(); }, 1000);
-  }, 5000);
+  // This script matches the official sveltia-cms-auth postMessage protocol:
+  // 1. Listen for 'authorizing:github' from the CMS opener
+  // 2. Send 'authorizing:github' to opener to signal readiness
+  // 3. When CMS responds with 'authorizing:github', send the token using the CMS origin
+  const html = `<!doctype html><html><body><script>
+(() => {
+  window.addEventListener('message', ({ data, origin }) => {
+    if (data === 'authorizing:${provider}') {
+      window.opener?.postMessage(
+        'authorization:${provider}:${state}:${content}',
+        origin
+      );
+    }
+  });
+  window.opener?.postMessage('authorizing:${provider}', '*');
 })();
-</script>
-</body>
-</html>`;
+</script></body></html>`;
 
-    res.setHeader('Content-Type', 'text/html');
-    return res.send(html);
-  } catch (error) {
-    console.error('OAuth error:', error);
-    return res.status(500).send('Authentication failed: ' + error.message);
-  }
+  res.setHeader('Content-Type', 'text/html;charset=UTF-8');
+  return res.send(html);
 }

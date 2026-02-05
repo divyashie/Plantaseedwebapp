@@ -1,24 +1,34 @@
 /**
- * OAuth endpoint for Sveltia/Decap CMS with GitHub
- * Uses client-side redirect to preserve window.opener reference
+ * OAuth endpoint for Sveltia CMS with GitHub
+ * Matches the official sveltia-cms-auth protocol
  */
 
 export default function handler(req, res) {
   const clientId = process.env.GITHUB_CLIENT_ID;
-  const siteUrl = process.env.SITE_URL || 'https://plantaseed.store';
-  const redirectUri = `${siteUrl}/api/callback`;
-  const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo,user`;
 
-  // Use client-side redirect to preserve window.opener
-  const html = `<!DOCTYPE html>
-<html>
-<head><title>Redirecting to GitHub...</title></head>
-<body>
-<p>Redirecting to GitHub for authentication...</p>
-<script>window.location.href = ${JSON.stringify(authUrl)};</script>
-</body>
-</html>`;
+  if (!clientId) {
+    // Return error using the same postMessage protocol as the callback
+    const content = JSON.stringify({ provider: 'github', error: 'OAuth app client ID is not configured.' });
+    const html = `<!doctype html><html><body><script>
+(() => {
+  window.addEventListener('message', ({ data, origin }) => {
+    if (data === 'authorizing:github') {
+      window.opener?.postMessage('authorization:github:error:' + ${JSON.stringify(content)}, origin);
+    }
+  });
+  window.opener?.postMessage('authorizing:github', '*');
+})();
+</script></body></html>`;
+    res.setHeader('Content-Type', 'text/html;charset=UTF-8');
+    return res.send(html);
+  }
 
-  res.setHeader('Content-Type', 'text/html');
-  res.send(html);
+  const params = new URLSearchParams({
+    client_id: clientId,
+    scope: 'repo,user',
+  });
+
+  // Use 302 redirect (matching the official sveltia-cms-auth behavior)
+  res.setHeader('Location', `https://github.com/login/oauth/authorize?${params.toString()}`);
+  return res.status(302).end();
 }
