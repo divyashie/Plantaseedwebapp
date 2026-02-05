@@ -2,7 +2,7 @@ backend:
   name: github
   repo: divyashie/Plantaseedwebapp
   branch: main
-  base_url: https://plantaseed.store
+  base_url: https://www.plantaseed.store
   auth_endpoint: /api/auth
 
 # When using the default proxy server port
@@ -13,8 +13,8 @@ media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
 # Site settings
-site_url: https://plantaseed.store
-display_url: https://plantaseed.store
+site_url: https://www.plantaseed.store
+display_url: https://www.plantaseed.store
 logo_url: /images/logo.png
 
 # Slug settings

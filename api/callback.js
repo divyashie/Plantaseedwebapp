@@ -1,6 +1,6 @@
 /**
  * OAuth callback for Sveltia CMS with GitHub
- * Matches the official sveltia-cms-auth postMessage protocol exactly
+ * Matches the official sveltia-cms-auth postMessage protocol
  */
 
 export default async function handler(req, res) {
@@ -56,23 +56,41 @@ function sendResponse(res, provider, { token, error }) {
     ? JSON.stringify({ provider, error })
     : JSON.stringify({ provider, token });
 
-  // This script matches the official sveltia-cms-auth postMessage protocol:
-  // 1. Listen for 'authorizing:github' from the CMS opener
-  // 2. Send 'authorizing:github' to opener to signal readiness
-  // 3. When CMS responds with 'authorizing:github', send the token using the CMS origin
-  const html = `<!doctype html><html><body><script>
+  const html = `<!doctype html><html><body>
+<p id="msg" style="font-family:sans-serif;padding:20px;">Completing authentication...</p>
+<script>
 (() => {
+  var msg = document.getElementById('msg');
+
+  if (!window.opener) {
+    msg.textContent = 'Error: Could not connect to CMS window. Please make sure popups are allowed, then close this window and try again.';
+    return;
+  }
+
+  msg.textContent = 'Sending credentials to CMS...';
+
   window.addEventListener('message', ({ data, origin }) => {
     if (data === 'authorizing:${provider}') {
-      window.opener?.postMessage(
+      window.opener.postMessage(
         'authorization:${provider}:${state}:${content}',
         origin
       );
+      msg.textContent = 'Authentication complete! This window should close automatically.';
+      setTimeout(() => window.close(), 1000);
     }
   });
-  window.opener?.postMessage('authorizing:${provider}', '*');
+
+  window.opener.postMessage('authorizing:${provider}', '*');
+
+  // If no response after 5 seconds, show status
+  setTimeout(() => {
+    if (msg.textContent === 'Sending credentials to CMS...') {
+      msg.textContent = 'Waiting for CMS to respond... If this takes too long, close this window and try again.';
+    }
+  }, 5000);
 })();
-</script></body></html>`;
+</script>
+</body></html>`;
 
   res.setHeader('Content-Type', 'text/html;charset=UTF-8');
   return res.send(html);
