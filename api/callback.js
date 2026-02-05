@@ -1,5 +1,5 @@
 /**
- * OAuth callback endpoint for Decap CMS with GitHub
+ * OAuth callback endpoint for Sveltia/Decap CMS with GitHub
  */
 
 export default async function handler(req, res) {
@@ -30,45 +30,47 @@ export default async function handler(req, res) {
     }
 
     const token = data.access_token;
+    const provider = 'github';
 
-    // Send the token back to Decap CMS using their expected format
-    const html = `
-<!DOCTYPE html>
+    const html = `<!DOCTYPE html>
 <html>
-<head>
-  <title>Authenticating...</title>
-</head>
+<head><title>CMS Authentication</title></head>
 <body>
-  <p id="status">Authenticating with GitHub...</p>
-  <script>
-    (function() {
-      var token = "${token}";
-      var provider = "github";
-      var message = "authorization:" + provider + ":success:" + JSON.stringify({token: token, provider: provider});
+<p id="status">Completing authentication...</p>
+<script>
+(function() {
+  var token = ${JSON.stringify(token)};
+  var provider = ${JSON.stringify(provider)};
+  var payload = JSON.stringify({ token: token, provider: provider });
+  var message = "authorization:" + provider + ":success:" + payload;
+  var statusEl = document.getElementById("status");
 
-      var statusEl = document.getElementById("status");
+  function sendMessage() {
+    if (window.opener) {
+      window.opener.postMessage(message, "*");
+      statusEl.textContent = "Authentication successful! This window should close automatically.";
+    } else {
+      statusEl.textContent = "Authentication successful! Please close this window and return to the CMS.";
+    }
+  }
 
-      if (window.opener) {
-        statusEl.textContent = "Sending credentials to CMS...";
-        // Try posting to opener
-        window.opener.postMessage(message, "*");
-        statusEl.textContent = "Success! This window will close.";
-        setTimeout(function() {
-          window.close();
-        }, 500);
-      } else {
-        statusEl.textContent = "Error: No opener window found. Please try again from the CMS.";
-      }
-    })();
-  </script>
+  // Send immediately and retry a few times
+  sendMessage();
+  setTimeout(sendMessage, 300);
+  setTimeout(sendMessage, 1000);
+  setTimeout(sendMessage, 2000);
+
+  // Try to close after a delay
+  setTimeout(function() { window.close(); }, 3000);
+})();
+</script>
 </body>
-</html>
-    `;
+</html>`;
 
     res.setHeader('Content-Type', 'text/html');
     return res.send(html);
   } catch (error) {
     console.error('OAuth error:', error);
-    return res.status(500).send(`Authentication failed: ${error.message}`);
+    return res.status(500).send('Authentication failed: ' + error.message);
   }
 }
