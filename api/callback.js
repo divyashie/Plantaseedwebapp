@@ -1,5 +1,6 @@
 /**
- * OAuth callback endpoint for Sveltia/Decap CMS with GitHub
+ * OAuth callback for Sveltia/Decap CMS with GitHub
+ * Uses the official Netlify CMS/Decap CMS OAuth handshake protocol
  */
 
 export default async function handler(req, res) {
@@ -26,12 +27,24 @@ export default async function handler(req, res) {
     const data = await tokenResponse.json();
 
     if (data.error) {
-      return res.status(400).send(`GitHub Error: ${data.error_description || data.error}`);
+      const html = `<!DOCTYPE html><html><body>
+<script>
+  if (window.opener) {
+    window.opener.postMessage("authorization:github:error:" + ${JSON.stringify(JSON.stringify({ message: data.error_description || data.error }))}, "*");
+  }
+  document.body.textContent = "Error: ${data.error_description || data.error}";
+</script>
+</body></html>`;
+      res.setHeader('Content-Type', 'text/html');
+      return res.send(html);
     }
 
     const token = data.access_token;
-    const provider = 'github';
 
+    // Use the official CMS OAuth handshake protocol:
+    // 1. Send "authorizing:github" to opener
+    // 2. Wait for opener to respond (confirming it's listening)
+    // 3. Send "authorization:github:success:{token}" using the origin from opener's response
     const html = `<!DOCTYPE html>
 <html>
 <head><title>CMS Authentication</title></head>
@@ -39,29 +52,42 @@ export default async function handler(req, res) {
 <p id="status">Completing authentication...</p>
 <script>
 (function() {
-  var token = ${JSON.stringify(token)};
-  var provider = ${JSON.stringify(provider)};
-  var payload = JSON.stringify({ token: token, provider: provider });
-  var message = "authorization:" + provider + ":success:" + payload;
   var statusEl = document.getElementById("status");
+  var token = ${JSON.stringify(token)};
+  var provider = "github";
 
-  function sendMessage() {
-    if (window.opener) {
-      window.opener.postMessage(message, "*");
-      statusEl.textContent = "Authentication successful! This window should close automatically.";
-    } else {
-      statusEl.textContent = "Authentication successful! Please close this window and return to the CMS.";
-    }
+  if (!window.opener) {
+    statusEl.textContent = "Error: No popup opener found. Make sure popups are allowed for this site.";
+    return;
   }
 
-  // Send immediately and retry a few times
-  sendMessage();
-  setTimeout(sendMessage, 300);
-  setTimeout(sendMessage, 1000);
-  setTimeout(sendMessage, 2000);
+  // Step 1: Listen for the CMS to respond
+  function receiveMessage(e) {
+    console.log("receiveMessage", e);
+    // Step 2: Send the token back to the CMS using the origin from the message
+    window.opener.postMessage(
+      "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
+      e.origin
+    );
+    window.removeEventListener("message", receiveMessage, false);
+    statusEl.textContent = "Authentication successful! This window will close.";
+    setTimeout(function() { window.close(); }, 1000);
+  }
 
-  // Try to close after a delay
-  setTimeout(function() { window.close(); }, 3000);
+  window.addEventListener("message", receiveMessage, false);
+
+  // Step 0: Signal to the CMS that we're authorizing
+  window.opener.postMessage("authorizing:" + provider, "*");
+
+  // Fallback: if no response after 5 seconds, try sending directly
+  setTimeout(function() {
+    window.opener.postMessage(
+      "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
+      "*"
+    );
+    statusEl.textContent = "Authentication sent. You may close this window.";
+    setTimeout(function() { window.close(); }, 1000);
+  }, 5000);
 })();
 </script>
 </body>
