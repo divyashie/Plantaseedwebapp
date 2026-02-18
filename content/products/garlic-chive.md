@@ -1,10 +1,14 @@
 ---
-title: Garlic Chive
-price: 25
+title: Golden Pothos
+price: 100
 currency: Rs
-description: Aromatic and versatile! These delicate grass-like herbs bring a gentle garlic flavor to your kitchen. Perfect for garnishing soups, salads, and stir-fries. Low maintenance, thrives in tropical climates, and regrows beautifully after each harvest. Planted in our signature eco-friendly recycled fabric planter.
-image: /images/product-specific/garlicChivePhoto.jpeg
-whatsappMessage: "Hi Danielle! I'd like to pre-order a Garlic Chive for Rs 25"
+description: |-
+  ☘️🌿🍀 At Rs 100 This lush Golden Pothos is the ultimate low-maintenance superstar:  Air-purifying powerhouse  
+  Thrives in low light (perfect for any room or office)  
+  Gorgeous heart-shaped leaves with creamy gold variegation  
+  Trails dramatically or climbs with ease.
+image: /images/uploads/1000109206.jpg
+whatsappMessage: Hi Danielle! I'd like to pre-order a Garlic Chive for Rs 25
 available: true
 featured: false
 order: 1
