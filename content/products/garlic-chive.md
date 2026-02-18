@@ -8,7 +8,7 @@ description: |-
   Gorgeous heart-shaped leaves with creamy gold variegation  
   Trails dramatically or climbs with ease.
 image: /images/uploads/1000109206.jpg
-whatsappMessage: Hi Danielle! I'd like to pre-order a Garlic Chive for Rs 25
+whatsappMessage: Hi Danielle! I'd like to pre-order a Golden Pothos for Rs 100
 available: true
 featured: false
 order: 1
