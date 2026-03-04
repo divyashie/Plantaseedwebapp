@@ -8,5 +8,5 @@ whatsappMessage: Hi Danielle! I'd like to pre-order an orchid for Rs 125
 available: true
 featured: false
 order: 2
-category: vegetables
+category: plants
 ---
