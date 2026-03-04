@@ -12,5 +12,5 @@ whatsappMessage: Hi Danielle! I'd like to pre-order a Golden Pothos for Rs 100
 available: true
 featured: false
 order: 1
-category: herbs
+category: plants
 ---
