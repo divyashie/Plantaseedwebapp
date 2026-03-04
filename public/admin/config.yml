@@ -160,13 +160,20 @@ collections:
       - label: "Category"
         name: "category"
         widget: "select"
+        default: "plants"
         options:
-          - { label: "Plants", value: "plants" }
-          - { label: "Seeds", value: "seeds" }
-          - { label: "Succulents", value: "succulents" }
-          - { label: "Herbs", value: "herbs" }
-          - { label: "Vegetables", value: "vegetables" }
-          - { label: "Seasonal", value: "seasonal" }
+          - label: "Plants"
+            value: "plants"
+          - label: "Seeds"
+            value: "seeds"
+          - label: "Succulents"
+            value: "succulents"
+          - label: "Herbs"
+            value: "herbs"
+          - label: "Vegetables"
+            value: "vegetables"
+          - label: "Seasonal"
+            value: "seasonal"
 
   # ============================================
   # GALLERY SECTION

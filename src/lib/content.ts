@@ -192,38 +192,17 @@ export const sections = {
 };
 
 // Helper function to parse frontmatter from markdown files
+import yaml from 'js-yaml';
+
 function parseFrontmatter<T>(content: string): T {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return {} as T;
 
-  const frontmatter = match[1];
-  const result: Record<string, unknown> = {};
-
-  frontmatter.split('\n').forEach(line => {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex === -1) return;
-
-    const key = line.slice(0, colonIndex).trim();
-    let value: unknown = line.slice(colonIndex + 1).trim();
-
-    // Remove quotes if present
-    if (typeof value === 'string' && value.startsWith('"') && value.endsWith('"')) {
-      value = value.slice(1, -1);
-    }
-
-    // Parse booleans
-    if (value === 'true') value = true;
-    if (value === 'false') value = false;
-
-    // Parse numbers
-    if (typeof value === 'string' && /^-?\d+$/.test(value)) {
-      value = parseInt(value, 10);
-    }
-
-    result[key] = value;
-  });
-
-  return result as T;
+  try {
+    return yaml.load(match[1]) as T;
+  } catch {
+    return {} as T;
+  }
 }
 
 // Load products from markdown files

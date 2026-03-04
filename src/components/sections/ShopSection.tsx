@@ -69,7 +69,7 @@ export function ShopSection() {
                   {product.currency} {product.price}
                 </Badge>
               </div>
-              <CardDescription className="text-sm sm:text-base">{product.description}</CardDescription>
+              <CardDescription className="text-sm sm:text-base whitespace-pre-line">{product.description}</CardDescription>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0 mt-auto">
               <Button className="w-full bg-green-600 hover:bg-green-700 text-sm sm:text-base" asChild>
