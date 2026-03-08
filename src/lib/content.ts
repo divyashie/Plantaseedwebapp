@@ -14,6 +14,7 @@ import navigationSettings from '../../content/settings/navigation.json';
 // Sections
 import heroContent from '../../content/sections/hero.json';
 import aboutContent from '../../content/sections/about.json';
+import productsSectionContent from '../../content/sections/products.json';
 import shopContent from '../../content/sections/shop.json';
 import galleryContent from '../../content/sections/gallery.json';
 import guideContent from '../../content/sections/guide.json';
@@ -84,6 +85,47 @@ export interface AboutContent {
   featureCards: FeatureCard[];
   contactTitle: string;
   contactSubtitle: string;
+}
+
+export interface ProductsHighlight {
+  title: string;
+  description: string;
+}
+
+export interface ProductsFeaturedProduct {
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  highlights: ProductsHighlight[];
+  whatsappMessage: string;
+}
+
+export interface ProductsProduceCard {
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+}
+
+export interface ProductsProduceSection {
+  title: string;
+  subtitle: string;
+  cards: ProductsProduceCard[];
+}
+
+export interface ProductsCta {
+  text: string;
+  buttonText: string;
+  whatsappMessage: string;
+}
+
+export interface ProductsSectionContent {
+  sectionTitle: string;
+  sectionSubtitle: string;
+  featuredProduct: ProductsFeaturedProduct;
+  produceSection: ProductsProduceSection;
+  cta: ProductsCta;
 }
 
 export interface OrderStep {
@@ -184,6 +226,7 @@ export const settings = {
 export const sections = {
   hero: heroContent as HeroContent,
   about: aboutContent as AboutContent,
+  products: productsSectionContent as ProductsSectionContent,
   shop: shopContent as ShopContent,
   gallery: galleryContent as GalleryContent,
   guide: guideContent as GuideContent,
