@@ -1,0 +1,49 @@
+{
+  "sectionTitle": "Our Products",
+  "sectionSubtitle": "Beautiful, eco-friendly planters and gardening essentials",
+  "featuredProduct": {
+    "title": "Recycled Can Planters",
+    "description": "Transform everyday items into beautiful homes for your plants! Our eco-friendly recycled can planters are perfect for starting your urban garden journey. Each planter is carefully prepared and decorated to add color and life to your space.",
+    "image": "/images/indoor/succulent-garden-display.jpg",
+    "imageAlt": "Recycled can planters with plants",
+    "highlights": [
+      {
+        "title": "Eco-Friendly",
+        "description": "Made from upcycled materials"
+      },
+      {
+        "title": "Perfect Size",
+        "description": "Ideal for herbs, flowers, and small vegetables"
+      },
+      {
+        "title": "Handcrafted",
+        "description": "Each piece is unique and made with love"
+      }
+    ],
+    "whatsappMessage": "Hi Danielle! I'm interested in your recycled can planters"
+  },
+  "produceSection": {
+    "title": "From Our Garden to Your Table",
+    "subtitle": "Fresh produce grown with love",
+    "cards": [
+      {
+        "title": "Fresh Chillies",
+        "description": "Homegrown, organic chillies bursting with flavor. Perfect for adding that special kick to your dishes!",
+        "image": "/images/gallery/mixed-flowering-plants-garden.jpg",
+        "imageAlt": "Fresh green chillies"
+      },
+      {
+        "title": "Garden Vegetables",
+        "description": "Beautiful aubergines and peppers, grown naturally in rich soil. Experience the true taste of homegrown produce!",
+        "image": "/images/gallery/potted-plants-collection.jpg",
+        "imageAlt": "Garden fresh aubergine and peppers"
+      }
+    ]
+  },
+  "cta": {
+    "text": "Interested in our products or fresh produce?",
+    "buttonText": "Contact Us",
+    "whatsappMessage": "Hi Danielle! I'm interested in your products"
+  }
+}
+
