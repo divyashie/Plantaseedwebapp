@@ -1,15 +1,17 @@
 {
   "sectionTitle": "Free eBook",
   "sectionSubtitle": "Learn the secrets of successful seed planting",
-  "ebookTitle": "The Complete Guide to Planting Seeds",
-  "ebookDescription": "This comprehensive guide covers everything you need to know about growing plants from seeds, from soil preparation to harvesting your first crops.",
-  "coverImage": "/images/garden-scenes/garden-landscape-overview.jpg",
-  "buttonText": "Download Free eBook",
-  "downloadUrl": "#",
+  "ebookTitle": "Tiny Seed, Big Dreams",
+  "ebookDescription": "A tropical invitation to love in the soil — discover the joy of growing happiness.",
+  "coverImage": "/images/ebook-cover.png",
+  "gumroadUrl": "https://diemahave.gumroad.com/l/hbecgv",
+  "price": "$3.99",
+  "buttonText": "Get the eBook",
+  "downloadUrl": "https://diemahave.gumroad.com/l/hbecgv",
   "features": [
-    { "text": "Step-by-step planting instructions" },
-    { "text": "Seasonal planting calendar" },
-    { "text": "Troubleshooting common problems" },
-    { "text": "Tips for tropical climates" }
+    { "title": "Tropical Secrets", "text": "Mastering the unique climate of Mauritius and tropical islands." },
+    { "title": "Instant Access", "text": "Download immediately and start your garden journey today." },
+    { "title": "Personal Story", "text": "Rooted in childhood memories of Floreal garden courtyards." },
+    { "title": "Local Focus", "text": "Expert advice tailored for Mauritian soil and biodiversity." }
   ]
 }

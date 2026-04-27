@@ -66,6 +66,12 @@ export interface Badge {
   color: 'green' | 'pink' | 'yellow' | 'blue' | 'purple' | 'orange';
 }
 
+export interface AboutValue {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
 export interface FeatureCard {
   title: string;
   description: string;
@@ -75,13 +81,20 @@ export interface FeatureCard {
 
 export interface AboutContent {
   sectionTitle: string;
+  eyebrow?: string;
   sectionSubtitle: string;
   mainPhoto: string;
   mainPhotoAlt: string;
+  yearsGrowing?: number;
   heading: string;
   paragraph1: string;
   paragraph2: string;
+  paragraph3?: string;
+  pullQuote?: string;
+  pullQuoteAuthor?: string;
   badges: Badge[];
+  values?: AboutValue[];
+  galleryLabel?: string;
   featureCards: FeatureCard[];
   contactTitle: string;
   contactSubtitle: string;
@@ -162,12 +175,42 @@ export interface GuideContent {
   faqTitle: string;
 }
 
+export interface MusicGratitudeCard {
+  title: string;
+  paragraph1: string;
+  paragraph2: string;
+  quote: string;
+}
+
+export interface MusicCta {
+  badgeText: string;
+  heading: string;
+  quote: string;
+  buttonText: string;
+  takeActionTitle: string;
+  takeActionItems: string[];
+  spreadLoveTitle: string;
+  spreadLoveItems: string[];
+}
+
 export interface MusicContent {
   sectionTitle: string;
   sectionSubtitle: string;
+  gumroadUrl: string;
+  gratitudeCard: MusicGratitudeCard;
+  cta: MusicCta;
+}
+
+export interface MusicVideo {
+  title: string;
+  description?: string;
+  videoId?: string;
+  embedUrl?: string;
+  order: number;
 }
 
 export interface EbookFeature {
+  title?: string;
   text: string;
 }
 
@@ -177,6 +220,8 @@ export interface EbookContent {
   ebookTitle: string;
   ebookDescription: string;
   coverImage: string;
+  gumroadUrl: string;
+  price: string;
   buttonText: string;
   downloadUrl: string;
   features: EbookFeature[];
@@ -193,6 +238,24 @@ export interface Product {
   featured: boolean;
   order: number;
   category: string;
+}
+
+export interface DigitalProduct {
+  title: string;
+  subtitle: string;
+  price: string;
+  originalPrice?: string;
+  description: string;
+  features: string[];
+  category: string;
+  badgeText?: string;
+  badgeColor?: string;
+  rating?: number;
+  downloads?: string;
+  image?: string;
+  lsUrl?: string;
+  isUpcoming?: boolean;
+  order: number;
 }
 
 export interface GalleryItem {
@@ -282,6 +345,28 @@ export const plantingSteps: PlantingStep[] = Object.values(stepsModules)
   .map(content => parseFrontmatter<PlantingStep>(content))
   .sort((a, b) => a.step - b.step);
 
+// Load digital products from markdown files
+const digitalModules = import.meta.glob<string>('../../content/digital/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
+
+export const digitalProducts: DigitalProduct[] = Object.values(digitalModules)
+  .map(content => parseFrontmatter<DigitalProduct>(content))
+  .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+// Load music videos from markdown files
+const videoModules = import.meta.glob<string>('../../content/music/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
+
+export const musicVideos: MusicVideo[] = Object.values(videoModules)
+  .map(content => parseFrontmatter<MusicVideo>(content))
+  .sort((a, b) => (a.order || 0) - (b.order || 0));
+
 // Load FAQs from markdown files
 const faqModules = import.meta.glob<string>('../../content/guide/faqs/*.md', {
   query: '?raw',
@@ -316,4 +401,8 @@ export function usePlantingSteps() {
 
 export function useFAQs() {
   return faqs;
+}
+
+export function useMusicVideos() {
+  return musicVideos;
 }

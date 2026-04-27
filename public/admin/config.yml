@@ -61,8 +61,8 @@ collections:
             name: "menuItems"
             widget: "list"
             fields:
-              - { label: "Label", name: "label", widget: "string" }
-              - { label: "Tab Value", name: "value", widget: "string" }
+              - { label: "Label (shown in nav)", name: "label", widget: "string" }
+              - { label: "Tab", name: "value", widget: "select", options: ["about","ebook","digital","products","shop","music","guide","gallery","contact"] }
               - { label: "Order", name: "order", widget: "number" }
               - { label: "Visible", name: "visible", widget: "boolean", default: true }
 
@@ -94,23 +94,37 @@ collections:
         label: "About Content"
         file: "content/sections/about.json"
         fields:
-          - { label: "Section Title", name: "sectionTitle", widget: "string", default: "Meet Danielle" }
+          - { label: "Section Title (e.g. Meet Danielle)", name: "sectionTitle", widget: "string", default: "Meet Danielle" }
+          - { label: "Eyebrow Label (small text above title)", name: "eyebrow", widget: "string", required: false, default: "The Story" }
           - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
           - { label: "Main Photo", name: "mainPhoto", widget: "image" }
           - { label: "Main Photo Alt Text", name: "mainPhotoAlt", widget: "string" }
-          - { label: "Heading", name: "heading", widget: "string" }
+          - { label: "Years Growing (badge number)", name: "yearsGrowing", widget: "number", required: false }
+          - { label: "Story Heading", name: "heading", widget: "string", hint: "Use a newline (\\n) to split onto two lines" }
           - { label: "Paragraph 1", name: "paragraph1", widget: "text" }
           - { label: "Paragraph 2", name: "paragraph2", widget: "text" }
+          - { label: "Paragraph 3 (optional)", name: "paragraph3", widget: "text", required: false }
+          - { label: "Pull Quote", name: "pullQuote", widget: "text", required: false }
+          - { label: "Pull Quote Author", name: "pullQuoteAuthor", widget: "string", required: false }
           - label: "Badges"
             name: "badges"
             widget: "list"
             fields:
               - { label: "Text", name: "text", widget: "string" }
               - { label: "Color", name: "color", widget: "select", options: ["green", "pink", "yellow", "blue", "purple", "orange"] }
-          - label: "Feature Cards"
+          - label: "Values Cards"
+            name: "values"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body Text", name: "body", widget: "text" }
+              - { label: "Icon", name: "icon", widget: "select", options: ["Leaf", "Sun", "Users", "Sprout", "Heart", "Star"], required: false }
+          - { label: "Gallery Label (above photo cards)", name: "galleryLabel", widget: "string", required: false, default: "From the Garden" }
+          - label: "Feature Cards (Gallery Photos)"
             name: "featureCards"
             widget: "list"
-            max: 2
+            max: 4
             fields:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
@@ -123,7 +137,7 @@ collections:
   # PRODUCTS PAGE SECTION (MARKETING)
   # ============================================
   - name: "products-section"
-    label: "Products Page (Marketing)"
+    label: "🌿 Products Page (Marketing Text)"
     files:
       - name: "products-content"
         label: "Products Page Content"
@@ -172,7 +186,7 @@ collections:
   # SHOP SECTION (CATALOG HEADER)
   # ============================================
   - name: "shop"
-    label: "Shop Section (Catalog Header)"
+    label: "🌱 Plants Shop — Page Settings"
     files:
       - name: "shop-settings"
         label: "Shop Settings"
@@ -192,7 +206,7 @@ collections:
           - { label: "Questions Section Text", name: "questionsText", widget: "text" }
 
   - name: "products"
-    label: "Shop Products (Items for Sale)"
+    label: "🪴 Plants for Sale (Individual Items)"
     folder: "content/products"
     create: true
     slug: "{{slug}}"
@@ -223,6 +237,51 @@ collections:
             value: "vegetables"
           - label: "Seasonal"
             value: "seasonal"
+
+  # ============================================
+  # DIGITAL SHOP
+  # ============================================
+  - name: "digital-products"
+    label: "💻 Digital Shop — Products"
+    folder: "content/digital"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Product Title", name: "title", widget: "string" }
+      - { label: "Subtitle (e.g. '60-page PDF guide')", name: "subtitle", widget: "string" }
+      - { label: "Price (e.g. $8.99)", name: "price", widget: "string" }
+      - { label: "Original / Crossed-out Price", name: "originalPrice", widget: "string", required: false }
+      - { label: "Short Description", name: "description", widget: "text" }
+      - label: "Features (bullet points)"
+        name: "features"
+        widget: "list"
+        field: { label: "Feature", name: "feature", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "eBook", value: "eBook" }
+          - { label: "Online Course", value: "Online Course" }
+          - { label: "Printable", value: "Printable" }
+          - { label: "Bundle", value: "Bundle" }
+      - { label: "Badge Text (e.g. Bestseller)", name: "badgeText", widget: "string", required: false }
+      - label: "Badge Colour"
+        name: "badgeColor"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Amber", value: "amber" }
+          - { label: "Rose / Red", value: "rose" }
+          - { label: "Teal", value: "teal" }
+          - { label: "Purple", value: "purple" }
+          - { label: "Green", value: "green" }
+          - { label: "Orange", value: "orange" }
+      - { label: "Rating (0–5)", name: "rating", widget: "number", value_type: "float", min: 0, max: 5, required: false }
+      - { label: "Download Count (display text, e.g. 1,240)", name: "downloads", widget: "string", required: false }
+      - { label: "Product Image", name: "image", widget: "image", required: false, hint: "Leave blank to use an auto-generated placeholder" }
+      - { label: "Purchase / Checkout URL", name: "lsUrl", widget: "string", required: false, hint: "LemonSqueezy or Gumroad checkout link" }
+      - { label: "Coming Soon (shows WhatsApp notify button instead of buy)", name: "isUpcoming", widget: "boolean", default: true }
+      - { label: "Display Order", name: "order", widget: "number", default: 0 }
 
   # ============================================
   # GALLERY SECTION
@@ -323,37 +382,68 @@ collections:
         fields:
           - { label: "Section Title", name: "sectionTitle", widget: "string" }
           - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
+          - { label: "Gumroad / Shop URL", name: "gumroadUrl", widget: "string", hint: "URL for the 'Get the eBook' and CTA buttons" }
+          - label: "Gratitude Card"
+            name: "gratitudeCard"
+            widget: "object"
+            fields:
+              - { label: "Card Title", name: "title", widget: "string" }
+              - { label: "Paragraph 1", name: "paragraph1", widget: "text" }
+              - { label: "Paragraph 2", name: "paragraph2", widget: "text" }
+              - { label: "Quote", name: "quote", widget: "text" }
+          - label: "Call-to-Action Section"
+            name: "cta"
+            widget: "object"
+            fields:
+              - { label: "Badge Text", name: "badgeText", widget: "string" }
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Quote", name: "quote", widget: "text" }
+              - { label: "Button Text", name: "buttonText", widget: "string" }
+              - { label: "Take Action — Card Title", name: "takeActionTitle", widget: "string" }
+              - label: "Take Action — Items"
+                name: "takeActionItems"
+                widget: "list"
+                field: { label: "Item", name: "item", widget: "string" }
+              - { label: "Spread the Love — Card Title", name: "spreadLoveTitle", widget: "string" }
+              - label: "Spread the Love — Items"
+                name: "spreadLoveItems"
+                widget: "list"
+                field: { label: "Item", name: "item", widget: "string" }
 
   - name: "videos"
-    label: "Videos"
+    label: "Music Videos"
     folder: "content/music"
     create: true
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "YouTube Video ID", name: "videoId", widget: "string", hint: "e.g., dQw4w9WgXcQ from youtube.com/watch?v=dQw4w9WgXcQ" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "YouTube Video ID", name: "videoId", widget: "string", required: false, hint: "e.g., dQw4w9WgXcQ from youtube.com/watch?v=dQw4w9WgXcQ" }
+      - { label: "Full Embed URL (for playlists)", name: "embedUrl", widget: "string", required: false, hint: "Use this instead of Video ID for YouTube playlists" }
       - { label: "Display Order", name: "order", widget: "number", default: 0 }
 
   # ============================================
   # EBOOK SECTION
   # ============================================
   - name: "ebook"
-    label: "eBook Section"
+    label: "📗 eBook Section"
     files:
       - name: "ebook-content"
         label: "eBook Content"
         file: "content/sections/ebook.json"
         fields:
-          - { label: "Section Title", name: "sectionTitle", widget: "string" }
-          - { label: "Section Subtitle", name: "sectionSubtitle", widget: "string" }
           - { label: "eBook Title", name: "ebookTitle", widget: "string" }
-          - { label: "eBook Description", name: "ebookDescription", widget: "markdown" }
+          - { label: "Short Description / Tagline", name: "ebookDescription", widget: "string" }
           - { label: "eBook Cover Image", name: "coverImage", widget: "image" }
-          - { label: "Download Button Text", name: "buttonText", widget: "string" }
-          - { label: "Download URL", name: "downloadUrl", widget: "string" }
-          - label: "Features"
+          - { label: "Gumroad / Purchase URL", name: "gumroadUrl", widget: "string", hint: "Full Gumroad checkout link" }
+          - { label: "Price (e.g. $3.99)", name: "price", widget: "string" }
+          - { label: "Buy Button Text", name: "buttonText", widget: "string", default: "Get the eBook" }
+          - label: "Feature Cards (4 cards shown below hero)"
             name: "features"
             widget: "list"
             fields:
-              - { label: "Feature Text", name: "text", widget: "string" }
+              - { label: "Card Title", name: "title", widget: "string" }
+              - { label: "Card Description", name: "text", widget: "string" }
+          - { label: "Section Title (internal)", name: "sectionTitle", widget: "string" }
+          - { label: "Section Subtitle (internal)", name: "sectionSubtitle", widget: "string" }
+          - { label: "Download URL (fallback)", name: "downloadUrl", widget: "string", required: false }
