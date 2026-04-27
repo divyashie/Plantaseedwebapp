@@ -1,27 +1,50 @@
 {
   "sectionTitle": "Meet Danielle",
-  "sectionSubtitle": "Passionate gardener and plant enthusiast",
+  "eyebrow": "The Story",
+  "sectionSubtitle": "Gardener, singer, and plant enthusiast — rooted in Mauritius, growing with love.",
   "mainPhoto": "/images/garden-scenes/gardener-with-flowers.jpg",
-  "mainPhotoAlt": "Danielle with her urban garden",
-  "heading": "Growing Dreams, One Seed at a Time",
-  "paragraph1": "Hi! I'm Danielle, and I believe that anyone can create their own green paradise, no matter how small the space. My journey started with a few recycled containers and a handful of seeds, and it blossomed into a thriving urban garden.",
-  "paragraph2": "Through Plant a Seed, I want to share the joy and fulfillment that comes from nurturing plants from their very beginning. Whether you're growing flowers that brighten your day or vegetables that nourish your family, every seed planted is a step toward a greener future.",
+  "mainPhotoAlt": "Danielle in her garden",
+  "yearsGrowing": 5,
+  "heading": "A Garden Named\nPlant a Seed",
+  "paragraph1": "My love for plants began as a little girl, watching my grandmother tend her garden in Vacoas — my first home. Those early mornings, hands in warm soil, the smell of earth after rain — they left a mark I never lost.",
+  "paragraph2": "When I moved to Cascavelle five years ago, I had a small patch of land and a heart full of those memories. I planted my first seeds there, and something bloomed in me too. I gave that garden a name: Plant a Seed.",
+  "paragraph3": "Today, Plant a Seed is both my Cascavelle garden and this community I'm building — a place to share the joy, the knowledge, and the quiet magic of growing things.",
+  "pullQuote": "Every seed I plant is a little piece of my grandmother's garden, growing again.",
+  "pullQuoteAuthor": "Danielle",
   "badges": [
-    { "text": "Urban Gardening", "color": "green" },
+    { "text": "Vacoas Roots", "color": "green" },
+    { "text": "Cascavelle Garden", "color": "green" },
     { "text": "Flower Enthusiast", "color": "pink" },
-    { "text": "Sustainable Living", "color": "yellow" },
     { "text": "Community Builder", "color": "blue" }
   ],
+  "values": [
+    {
+      "title": "Rooted in Nature",
+      "body": "Every plant is a teacher. Danielle's garden philosophy begins with deep respect for the living world around us.",
+      "icon": "Leaf"
+    },
+    {
+      "title": "Tropical at Heart",
+      "body": "Born and raised in Mauritius, the island landscape shapes every seed choice, every guide, and every song.",
+      "icon": "Sun"
+    },
+    {
+      "title": "Growing Together",
+      "body": "Plant a Seed is more than a garden — it's a community of people who believe a greener world starts at home.",
+      "icon": "Users"
+    }
+  ],
+  "galleryLabel": "From the Garden",
   "featureCards": [
     {
       "title": "Orchid Collection",
-      "description": "These delicate beauties are a testament to patience and care. Orchids may seem challenging, but with the right approach, they reward you with stunning blooms.",
+      "description": "Delicate beauties that reward patience — these blooms are a testament to gentle, consistent care.",
       "image": "/images/flowers/orchids/orchidsPhoto.jpeg",
       "imageAlt": "Beautiful orchids from the garden"
     },
     {
       "title": "Tropical Treasures",
-      "description": "Hibiscus flowers bring a touch of the tropics to any garden. Their vibrant colors and unique petals make every bloom a celebration.",
+      "description": "Hibiscus flowers bring a touch of the tropics to any garden. Vibrant, bold, and gloriously tropical.",
       "image": "/images/flowers/hibiscus/peach-pink-hibiscus-closeup.jpg",
       "imageAlt": "Vibrant hibiscus flower"
     }

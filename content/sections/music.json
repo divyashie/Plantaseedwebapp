@@ -1,4 +1,31 @@
 {
-  "sectionTitle": "Garden Music",
-  "sectionSubtitle": "Relax with our curated music while you garden"
+  "sectionTitle": "Music by Danielle",
+  "sectionSubtitle": "Heartfelt songs celebrating nature, life, and our connection to Mother Earth",
+  "gumroadUrl": "https://diemahave.gumroad.com/l/hbecgv",
+  "gratitudeCard": {
+    "title": "A Message of Gratitude and Healing",
+    "paragraph1": "This song is a heartfelt tribute to our beautiful planet Earth. It's a thankful way to honor everything our Earth has given us — the soil beneath our feet, the air we breathe, the water that sustains us, and the seeds that grow into life.",
+    "paragraph2": "It's also a gentle plea for forgiveness for all the harm we've caused. Through music, I hope to sensitize people about the importance of caring for our planet and inspire everyone to plant seeds of change.",
+    "quote": "Every seed we plant is a promise to the Earth. Let's make that promise with love, gratitude, and hope for a greener tomorrow. — Danielle"
+  },
+  "cta": {
+    "badgeText": "Join the Movement",
+    "heading": "Be the Change the Earth Needs",
+    "quote": "Every seed we plant is a promise to the Earth. Together, we can nurture a greener tomorrow.",
+    "buttonText": "Support Danielle's Mission",
+    "takeActionTitle": "Take Action",
+    "takeActionItems": [
+      "Plant a tree or start a garden",
+      "Reduce, reuse, and recycle",
+      "Support sustainable practices",
+      "Protect our local biodiversity"
+    ],
+    "spreadLoveTitle": "Spread the Love",
+    "spreadLoveItems": [
+      "Like and share these songs",
+      "Comment your garden stories",
+      "Tag friends who love nature",
+      "Join our eco-community"
+    ]
+  }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "./ui/button";
 import { Menu, X } from "lucide-react";
+import { settings } from "../lib/content";
 
 interface NavigationProps {
   activeTab: string;
@@ -8,135 +8,156 @@ interface NavigationProps {
 }
 
 const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
-  const [isCompact, setIsCompact] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled]         = useState(false);
+  const [menuOpen, setMenuOpen]         = useState(false);
+
+  const navItems = settings.navigation.menuItems
+    .filter(item => item.visible)
+    .sort((a, b) => a.order - b.order);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY < 50) {
-        setIsCompact(false);
-        setIsMobileMenuOpen(false);
-      } else if (currentScrollY < lastScrollY) {
-        setIsCompact(false);
-        setIsMobileMenuOpen(false);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsCompact(true);
-        setIsMobileMenuOpen(false);
-      }
-
-      setLastScrollY(currentScrollY);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 50);
+      if (y > lastY + 10 && y > 80) setMenuOpen(false);
+      lastY = y;
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
-  const navItems = [
-    { name: "About", value: "about" },
-    { name: "eBook", value: "ebook" },
-    { name: "Products", value: "products" },
-    { name: "Shop", value: "shop" },
-    { name: "Music", value: "music" },
-    { name: "Guide", value: "guide" },
-    { name: "Gallery", value: "gallery" },
-  ];
-
-  const handleNavClick = (value: string) => {
-    onTabChange(value);
-    setIsMobileMenuOpen(false);
-
-    const contentSection = document.querySelector('.max-w-7xl');
-    if (contentSection) {
-      const navHeight = 80;
-      const elementPosition = contentSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-    }
-  };
-
-  // Check if we're on a large screen (desktop)
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Show hamburger on mobile always, or on desktop when compact
-  const showHamburger = !isDesktop || isCompact;
-  // Show nav items on desktop when not compact
-  const showNavItems = isDesktop && !isCompact;
+  const handleClick = (value: string) => {
+    onTabChange(value);
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 bg-green-900 text-white border-b border-green-800 shadow-md"
-      style={{ zIndex: 9999 }}
+      style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        backgroundColor: scrolled || menuOpen ? 'rgba(5,46,22,0.95)' : 'transparent',
+        backdropFilter: scrolled || menuOpen ? 'blur(16px)' : 'none',
+        WebkitBackdropFilter: scrolled || menuOpen ? 'blur(16px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(74,222,128,0.12)' : 'none',
+        transition: 'background-color 0.25s ease',
+      }}
     >
-      <div className="flex items-center h-16 lg:h-20">
-        {/* Logo - at the left edge */}
+      {/* ── Top bar ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center',
+        height: '3.75rem',
+        paddingLeft: '0.75rem',
+        paddingRight: '0.5rem',
+      }}>
+
+        {/* Logo — far left */}
         <button
-          onClick={() => handleNavClick('about')}
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity pl-1"
+          onClick={() => handleClick('about')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '0.625rem',
+            background: 'none', border: 'none', cursor: 'pointer',
+            padding: '0.35rem 0.5rem', borderRadius: '0.5rem',
+            transition: 'opacity 0.15s',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '0.75')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
         >
-          <img src="/images/logo.jpeg" alt="Plant A Seed Logo" className="w-10 h-10 object-contain" />
-          <span className="font-bold text-lg text-white hidden sm:inline">Plant A Seed</span>
+          <img
+            src="/images/logo.jpeg"
+            alt="Plant A Seed"
+            style={{
+              width: '2rem', height: '2rem',
+              borderRadius: '50%', objectFit: 'contain',
+              border: '1.5px solid rgba(74,222,128,0.4)',
+            }}
+          />
+          <span style={{
+            fontWeight: 700, fontSize: '0.95rem', color: 'white',
+            letterSpacing: '0.01em', whiteSpace: 'nowrap',
+          }}>
+            Plant A Seed
+          </span>
         </button>
 
-        {/* Spacer */}
-        <div className="flex-1" />
+        <div style={{ flex: 1 }} />
 
-        {/* Desktop Nav Items - only when not compact */}
-        {showNavItems && (
-          <div className="flex items-center gap-1 pr-4">
-            {navItems.map((item) => (
-              <Button
-                key={item.name}
-                variant="ghost"
-                onClick={() => handleNavClick(item.value)}
-                className={`text-white hover:text-green-200 hover:bg-green-800 text-sm px-3 py-2 h-auto font-medium transition-colors ${
-                  activeTab === item.value ? "text-green-200 bg-green-800" : ""
-                }`}
-              >
-                {item.name}
-              </Button>
-            ))}
-          </div>
-        )}
-
-        {/* Hamburger - on mobile always, on desktop when compact */}
-        {showHamburger && (
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 mr-2 lg:mr-4 text-white hover:text-green-200 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        )}
+        {/* Hamburger toggle */}
+        <button
+          onClick={() => setMenuOpen(prev => !prev)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            width: '2.5rem', height: '2.5rem',
+            background: menuOpen ? 'rgba(74,222,128,0.15)' : 'none',
+            border: menuOpen ? '1px solid rgba(74,222,128,0.3)' : '1px solid transparent',
+            borderRadius: '0.5rem',
+            cursor: 'pointer', color: 'white',
+            transition: 'background-color 0.15s, border-color 0.15s',
+          }}
+          onMouseEnter={e => {
+            if (!menuOpen) {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.1)';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.2)';
+            }
+          }}
+          onMouseLeave={e => {
+            if (!menuOpen) {
+              (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+              (e.currentTarget as HTMLButtonElement).style.borderColor = 'transparent';
+            }
+          }}
+        >
+          {menuOpen ? <X size={20} strokeWidth={2.5} /> : <Menu size={20} strokeWidth={2} />}
+        </button>
       </div>
 
-      {/* Dropdown Menu */}
-      {isMobileMenuOpen && (
-        <div className="border-t border-green-800 bg-green-900">
-          <div className="flex flex-col py-2">
-            {navItems.map((item) => (
-              <Button
-                key={item.name}
-                variant="ghost"
-                onClick={() => handleNavClick(item.value)}
-                className={`text-white hover:text-green-200 hover:bg-green-800 text-base px-6 py-3 h-auto font-medium transition-colors w-full justify-start rounded-none ${
-                  activeTab === item.value ? "text-green-200 bg-green-800" : ""
-                }`}
+      {/* ── Dropdown ── */}
+      {menuOpen && (
+        <div style={{
+          borderTop: '1px solid rgba(74,222,128,0.15)',
+          paddingTop: '0.375rem',
+          paddingBottom: '0.75rem',
+        }}>
+          {navItems.map(item => {
+            const isActive = activeTab === item.value;
+            return (
+              <button
+                key={item.value}
+                onClick={() => handleClick(item.value)}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'left',
+                  background: isActive ? 'rgba(74,222,128,0.1)' : 'none',
+                  border: 'none',
+                  borderLeft: isActive ? '3px solid #4ade80' : '3px solid transparent',
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                  fontWeight: isActive ? 700 : 400,
+                  color: isActive ? '#86efac' : 'rgba(255,255,255,0.85)',
+                  padding: '0.8rem 1.5rem',
+                  transition: 'background-color 0.12s, color 0.12s',
+                  letterSpacing: '0.005em',
+                }}
+                onMouseEnter={e => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.06)';
+                    (e.currentTarget as HTMLButtonElement).style.color = 'white';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
+                    (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.85)';
+                  }
+                }}
               >
-                {item.name}
-              </Button>
-            ))}
-          </div>
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       )}
     </nav>
