@@ -6,16 +6,28 @@
   "mainPhotoAlt": "Danielle in her garden",
   "yearsGrowing": 5,
   "heading": "A Garden Named\nPlant a Seed",
-  "paragraph1": "My love for plants began as a little girl, watching my grandmother tend her garden in Vacoas — my first home. Those early mornings, hands in warm soil, the smell of earth after rain — they left a mark I never lost.",
+  "paragraph1": "My love for plants began as a little girl, watching my grandmother tend her garden in Floreal — my first home. Those early mornings, hands in warm soil, the smell of earth after rain — they left a mark I never lost.",
   "paragraph2": "When I moved to Cascavelle five years ago, I had a small patch of land and a heart full of those memories. I planted my first seeds there, and something bloomed in me too. I gave that garden a name: Plant a Seed.",
   "paragraph3": "Today, Plant a Seed is both my Cascavelle garden and this community I'm building — a place to share the joy, the knowledge, and the quiet magic of growing things.",
   "pullQuote": "Every seed I plant is a little piece of my grandmother's garden, growing again.",
   "pullQuoteAuthor": "Danielle",
   "badges": [
-    { "text": "Vacoas Roots", "color": "green" },
-    { "text": "Cascavelle Garden", "color": "green" },
-    { "text": "Flower Enthusiast", "color": "pink" },
-    { "text": "Community Builder", "color": "blue" }
+    {
+      "text": "Vacoas Roots",
+      "color": "green"
+    },
+    {
+      "text": "Cascavelle Garden",
+      "color": "green"
+    },
+    {
+      "text": "Flower Enthusiast",
+      "color": "pink"
+    },
+    {
+      "text": "Community Builder",
+      "color": "blue"
+    }
   ],
   "values": [
     {
