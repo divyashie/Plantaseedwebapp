@@ -13,13 +13,14 @@ import { GallerySection } from './components/sections/GallerySection';
 import { DigitalProductsSection } from './components/sections/DigitalProductsSection';
 import { ContactSection } from './components/sections/ContactSection';
 import { PageHeader } from './components/PageHeader';
+import { WhatsAppButton } from './components/WhatsAppButton';
 import { Analytics } from '@vercel/analytics/react';
 import { settings } from './lib/content';
 
 const STATIC_TABS = [
   { value: 'about', label: 'About' },
   { value: 'ebook', label: 'eBook' },
-  { value: 'digital', label: 'Digital Shop' },
+  // { value: 'digital', label: 'Digital Shop' }, // hidden until digital store launches
   { value: 'products', label: 'Products' },
   { value: 'shop', label: 'Plants' },
   { value: 'music', label: 'Music' },
@@ -198,6 +199,7 @@ export default function App() {
         </div>
 
       </footer>
+      <WhatsAppButton />
       <Analytics />
     </div>
   );
