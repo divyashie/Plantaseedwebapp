@@ -7,7 +7,7 @@ description: |-
   Thrives in low light (perfect for any room or office)  
   Gorgeous heart-shaped leaves with creamy gold variegation  
   Trails dramatically or climbs with ease.
-image: /images/uploads/1000109206.jpg
+image: /images/uploads/1000127230.jpg
 whatsappMessage: Hi Danielle! I'd like to pre-order a Golden Pothos for Rs 100
 available: true
 featured: false
