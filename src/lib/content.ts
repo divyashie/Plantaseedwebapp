@@ -20,6 +20,7 @@ import galleryContent from '../../content/sections/gallery.json';
 import guideContent from '../../content/sections/guide.json';
 import musicContent from '../../content/sections/music.json';
 import ebookContent from '../../content/sections/ebook.json';
+import affiliateContent from '../../content/sections/affiliate.json';
 
 // Types
 export interface GeneralSettings {
@@ -227,6 +228,34 @@ export interface EbookContent {
   features: EbookFeature[];
 }
 
+export interface AffiliateItem {
+  title: string;
+  description: string;
+  link: string;
+  badge?: string;
+}
+
+export interface AffiliateContent {
+  sectionTitle: string;
+  sectionSubtitle: string;
+  intro: string;
+  ctaText: string;
+  items: AffiliateItem[];
+}
+
+export interface BlogPost {
+  title: string;
+  slug: string;
+  description: string;
+  image: string;
+  category: string;
+  readTime: string;
+  publishedAt: string;
+  featured?: boolean;
+  order: number;
+  link?: string;
+}
+
 export interface Product {
   title: string;
   price: number;
@@ -295,6 +324,7 @@ export const sections = {
   guide: guideContent as GuideContent,
   music: musicContent as MusicContent,
   ebook: ebookContent as EbookContent,
+  affiliate: affiliateContent as AffiliateContent,
 };
 
 // Helper function to parse frontmatter from markdown files
@@ -376,6 +406,17 @@ const faqModules = import.meta.glob<string>('../../content/guide/faqs/*.md', {
 
 export const faqs: FAQ[] = Object.values(faqModules)
   .map(content => parseFrontmatter<FAQ>(content))
+  .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+// Load blog posts from markdown files
+const blogModules = import.meta.glob<string>('../../content/blog/*.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+});
+
+export const blogPosts: BlogPost[] = Object.values(blogModules)
+  .map(content => parseFrontmatter<BlogPost>(content))
   .sort((a, b) => (a.order || 0) - (b.order || 0));
 
 // Convenience hooks for React components
