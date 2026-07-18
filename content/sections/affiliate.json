@@ -1,0 +1,26 @@
+{
+  "sectionTitle": "Affiliate growth",
+  "sectionSubtitle": "International-friendly picks for gardeners who want to grow with confidence.",
+  "intro": "These practical resources help global gardeners build a stronger routine, discover better tools and share their passion online.",
+  "ctaText": "Explore the picks",
+  "items": [
+    {
+      "title": "Tropical plant care handbook",
+      "description": "A helpful guide for beginners balancing humidity, light and regular care in warmer climates.",
+      "link": "https://www.amazon.com/s?k=tropical+plant+care+book",
+      "badge": "Best seller"
+    },
+    {
+      "title": "Garden journal set",
+      "description": "A beautiful way to track watering, growth and seasonal wins for international buyers.",
+      "link": "https://www.etsy.com/market/garden_journal",
+      "badge": "New"
+    },
+    {
+      "title": "Indoor grow lights",
+      "description": "A strong option for gardeners who want healthy plants in apartments and cooler spaces.",
+      "link": "https://www.amazon.com/s?k=indoor+grow+light",
+      "badge": "Popular"
+    }
+  ]
+}
