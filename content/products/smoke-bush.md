@@ -2,7 +2,7 @@
 title: Smoke Bush
 price: 500
 currency: Rs
-description: Add a touch of magic to your garden plant a Smokebush today.
+description: Bring home a striking smoke bush with airy foliage that adds sculptural beauty and fresh garden presence.
 image: /images/uploads/1000127108.jpg
 whatsappMessage: I want to buy this smokebush
 available: true

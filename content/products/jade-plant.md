@@ -2,7 +2,7 @@
 title: Jade Plant
 price: 50
 currency: Rs
-description: The lucky money tree! This charming Jade Plant features plump, glossy leaves that bring prosperity and good fortune. Incredibly resilient and long-lived, perfect for beginners and seasoned plant lovers. Its thick stems create a miniature tree appearance that matures beautifully. Water sparingly and watch it thrive!
+description: Bring home a cheerful jade plant with easy care, lasting greenery, and a polished look for any room.
 image: /images/uploads/1000109770.jpg
 whatsappMessage: Hi Danielle! I'd like to pre-order a Jade Plant for Rs 50
 available: true
