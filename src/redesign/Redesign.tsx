@@ -24,6 +24,9 @@ const waBase = `https://wa.me/${contact.whatsapp}`;
 const waLink = (message: string) =>
   `${waBase}?text=${encodeURIComponent(message)}`;
 
+const plantWaMessage = (plant: { title: string; whatsappMessage?: string }) =>
+  plant.whatsappMessage || `Hi Danielle! I'd like to ask about the ${plant.title}.`;
+
 function WhatsAppIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -578,7 +581,7 @@ function GardenPlanner() {
                           {tip && <p className="ps-planner-tip">{tip}</p>}
                           <a
                             className="ps-wa"
-                            href={waLink(plant.whatsappMessage)}
+                            href={waLink(plantWaMessage(plant))}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -990,7 +993,7 @@ function PlantQuickView({
           </div>
           <a
             className="ps-quickview-ask"
-            href={waLink(plant.whatsappMessage)}
+            href={waLink(plantWaMessage(plant))}
             target="_blank"
             rel="noopener noreferrer"
           >
