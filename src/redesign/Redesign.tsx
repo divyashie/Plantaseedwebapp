@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import {
   settings,
@@ -10,7 +10,9 @@ import {
 } from '../lib/content';
 import { applySeo } from '../lib/seo';
 import { useReveal } from './useReveal';
+import { useTilt } from './useTilt';
 import './redesign.css';
+
 
 /* ------------------------------------------------------------------ */
 /* Shared bits                                                         */
@@ -112,6 +114,29 @@ const TICKER_ITEMS = [
 ];
 
 function Hero() {
+  const archRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        archRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const speed = 0.05 + i * 0.03;
+          el.style.transform = `translateY(${Math.min(y * speed, 60)}px)`;
+        });
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <>
       <header className="ps-hero" id="top">
@@ -130,11 +155,21 @@ function Hero() {
           <a className="ps-btn ps-btn--ghost" href="#story">
             Meet Danielle
           </a>
+          <a className="ps-btn ps-btn--ghost" href="#planner">
+            Find your fit
+          </a>
         </div>
         <div className="ps-hero-arches" aria-hidden="true">
-          {HERO_ARCHES.map((src) => (
+          {HERO_ARCHES.map((src, i) => (
             <div className="ps-hero-arch" key={src}>
-              <img src={src} alt="" />
+              <div
+                className="ps-hero-arch-inner"
+                ref={(el) => {
+                  archRefs.current[i] = el;
+                }}
+              >
+                <img src={src} alt="" />
+              </div>
             </div>
           ))}
         </div>
@@ -288,6 +323,288 @@ function BlogSection() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Garden fit finder — space + light + region matcher                  */
+/* ------------------------------------------------------------------ */
+
+type SpaceKey = 'pot' | 'hanging' | 'bed' | 'garden';
+type LightKey = 'full-sun' | 'partial-shade' | 'shade';
+type RegionKey = 'west' | 'north' | 'plateau' | 'east';
+
+interface PlantTag {
+  light: LightKey[];
+  space: SpaceKey[];
+  water: 'Low' | 'Moderate' | 'Regular';
+  skill: 'Easy' | 'Needs a little care';
+  regionTip?: Partial<Record<RegionKey, string>>;
+}
+
+const SPACE_OPTIONS: { key: SpaceKey; label: string; hint: string }[] = [
+  { key: 'pot', label: 'A pot or windowsill', hint: 'Small container, indoors or on a ledge' },
+  { key: 'hanging', label: 'Balcony or hanging spot', hint: 'Hanging baskets, trailing plants' },
+  { key: 'bed', label: 'Small garden bed', hint: 'A patch of soil, courtyard or patio' },
+  { key: 'garden', label: 'A full garden', hint: 'Room for something that grows tall or wide' },
+];
+
+const LIGHT_OPTIONS: { key: LightKey; label: string; hint: string }[] = [
+  { key: 'full-sun', label: 'Full sun', hint: 'Direct sun most of the day' },
+  { key: 'partial-shade', label: 'Partial shade', hint: 'A few hours of direct sun' },
+  { key: 'shade', label: 'Mostly shade', hint: 'Bright but indirect light' },
+];
+
+const REGIONS: { key: RegionKey; label: string; blurb: string }[] = [
+  { key: 'west', label: 'West Coast', blurb: 'Black River, Flic-en-Flac, Tamarin — hot and the driest part of the island' },
+  { key: 'north', label: 'North Coast', blurb: 'Grand Baie, Trou aux Biches, Pereybère — warm and coastal' },
+  { key: 'plateau', label: 'Central Plateau', blurb: 'Curepipe, Vacoas, Moka — cooler, wetter, more overcast' },
+  { key: 'east', label: 'East Coast', blurb: 'Belle Mare, Flacq, Trou d’Eau Douce — humid with steady trade winds' },
+];
+
+const CATEGORY_DEFAULT_TAGS: Record<string, PlantTag> = {
+  succulents: { light: ['full-sun', 'partial-shade'], space: ['pot', 'bed'], water: 'Low', skill: 'Easy' },
+  herbs: { light: ['full-sun', 'partial-shade'], space: ['pot', 'bed'], water: 'Moderate', skill: 'Easy' },
+  plants: { light: ['partial-shade', 'shade'], space: ['pot', 'hanging', 'bed'], water: 'Moderate', skill: 'Easy' },
+};
+
+const FALLBACK_TAG: PlantTag = { light: ['partial-shade'], space: ['pot', 'bed'], water: 'Moderate', skill: 'Easy' };
+
+const PLANT_CARE_TAGS: Record<string, PlantTag> = {
+  'Jade Plant': {
+    light: ['full-sun', 'partial-shade'],
+    space: ['pot'],
+    water: 'Low',
+    skill: 'Easy',
+    regionTip: {
+      west: 'Loves the dry West Coast sun — one of the easiest picks there.',
+      plateau: 'Give it your sunniest spot and let the soil dry out between waterings in the wetter Plateau air.',
+    },
+  },
+  Stonecrop: {
+    light: ['full-sun'],
+    space: ['pot', 'bed'],
+    water: 'Low',
+    skill: 'Easy',
+    regionTip: {
+      west: 'A natural fit for West Coast dryness and heat.',
+      east: 'Plant in a raised bed or pot so it drains well through East Coast rain.',
+    },
+  },
+  'Flaming Katy': {
+    light: ['full-sun', 'partial-shade'],
+    space: ['pot'],
+    water: 'Low',
+    skill: 'Easy',
+    regionTip: {
+      plateau: 'Keep it under cover from heavy Plateau rain — it prefers to dry out between waterings.',
+    },
+  },
+  'Golden Pothos': {
+    light: ['partial-shade', 'shade'],
+    space: ['pot', 'hanging'],
+    water: 'Moderate',
+    skill: 'Easy',
+    regionTip: {
+      east: 'Thrives in East Coast humidity.',
+      north: 'Happy on a shaded North Coast balcony, out of the harshest midday sun.',
+    },
+  },
+  'Turtle Vine': {
+    light: ['partial-shade', 'shade'],
+    space: ['pot', 'hanging'],
+    water: 'Moderate',
+    skill: 'Easy',
+    regionTip: {
+      east: 'Enjoys the humidity of the East Coast.',
+      plateau: 'Handles the Plateau’s cooler, damper air well.',
+    },
+  },
+  Orchid: {
+    light: ['partial-shade', 'shade'],
+    space: ['pot', 'hanging'],
+    water: 'Moderate',
+    skill: 'Needs a little care',
+    regionTip: {
+      plateau: 'The Plateau’s cooler, humid air is close to ideal orchid weather.',
+      west: 'Keep it shaded and mist often to offset the West Coast’s dry heat.',
+    },
+  },
+  Oncidium: {
+    light: ['partial-shade', 'shade'],
+    space: ['pot', 'hanging'],
+    water: 'Moderate',
+    skill: 'Needs a little care',
+    regionTip: {
+      plateau: 'Humid Plateau air suits this orchid especially well.',
+      west: 'Shade it from direct afternoon sun and mist regularly on the West Coast.',
+    },
+  },
+  'Smoke Bush': {
+    light: ['full-sun'],
+    space: ['garden'],
+    water: 'Moderate',
+    skill: 'Easy',
+    regionTip: {
+      west: 'Full West Coast sun brings out its best foliage colour.',
+      east: 'Give it a sheltered spot away from the strongest East Coast winds.',
+    },
+  },
+};
+
+function getPlantTag(product: { title: string; category: string }): PlantTag {
+  return PLANT_CARE_TAGS[product.title] ?? CATEGORY_DEFAULT_TAGS[product.category] ?? FALLBACK_TAG;
+}
+
+function GardenPlanner() {
+  const available = useMemo(() => products.filter((p) => p.available), []);
+  const [space, setSpace] = useState<SpaceKey | null>(null);
+  const [light, setLight] = useState<LightKey | null>(null);
+  const [region, setRegion] = useState<RegionKey | null>(null);
+
+  const results = useMemo(() => {
+    if (!space || !light) return [];
+    return available
+      .map((p) => {
+        const tag = getPlantTag(p);
+        let score = 0;
+        if (tag.light.includes(light)) score += 2;
+        if (tag.space.includes(space)) score += 2;
+        return { plant: p, tag, score };
+      })
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score);
+  }, [available, space, light]);
+
+  const topScore = results[0]?.score ?? 0;
+  const regionInfo = region ? REGIONS.find((r) => r.key === region) : null;
+
+  return (
+    <section className="ps-section ps-dark" id="planner">
+      <div className="ps-wrap">
+        <div className="ps-rv">
+          <span className="ps-eyebrow">Garden fit finder</span>
+          <h2 className="ps-h2">
+            Which plant suits <em>your space?</em>
+          </h2>
+          <p className="ps-lede">
+            Answer a couple of quick questions and get a shortlist from Danielle&rsquo;s
+            current garden — matched to your space, light and part of Mauritius.
+          </p>
+        </div>
+
+        <div className="ps-planner-form ps-rv">
+          <div>
+            <span className="ps-planner-q-label">1. Where will it live?</span>
+            <div className="ps-planner-opts">
+              {SPACE_OPTIONS.map((o) => (
+                <button
+                  key={o.key}
+                  type="button"
+                  className={`ps-planner-opt ${space === o.key ? 'is-active' : ''}`}
+                  onClick={() => setSpace(o.key)}
+                >
+                  <strong>{o.label}</strong>
+                  <span>{o.hint}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="ps-planner-q-label">2. How much sun does it get?</span>
+            <div className="ps-planner-opts">
+              {LIGHT_OPTIONS.map((o) => (
+                <button
+                  key={o.key}
+                  type="button"
+                  className={`ps-planner-opt ${light === o.key ? 'is-active' : ''}`}
+                  onClick={() => setLight(o.key)}
+                >
+                  <strong>{o.label}</strong>
+                  <span>{o.hint}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span className="ps-planner-q-label">
+              3. Where in Mauritius are you? <em>(optional)</em>
+            </span>
+            <div className="ps-planner-opts">
+              {REGIONS.map((o) => (
+                <button
+                  key={o.key}
+                  type="button"
+                  className={`ps-planner-opt ${region === o.key ? 'is-active' : ''}`}
+                  onClick={() => setRegion(region === o.key ? null : o.key)}
+                >
+                  <strong>{o.label}</strong>
+                  <span>{o.blurb}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {space && light ? (
+          <div className="ps-planner-results ps-rv">
+            {results.length === 0 ? (
+              <p className="ps-planner-empty">
+                Nothing in the current garden is a strong match yet — message Danielle
+                directly on WhatsApp and she&rsquo;ll help you find something.
+              </p>
+            ) : (
+              <>
+                {regionInfo && (
+                  <p className="ps-planner-region-note">
+                    Showing fit for <strong>{regionInfo.label}</strong> — {regionInfo.blurb.toLowerCase()}.
+                  </p>
+                )}
+                <div className="ps-planner-grid">
+                  {results.map(({ plant, tag, score }) => {
+                    const tip = region ? tag.regionTip?.[region] : undefined;
+                    return (
+                      <div className="ps-planner-card" key={plant.title}>
+                        {score === topScore && <span className="ps-planner-badge">Best fit</span>}
+                        <img src={plant.image} alt={plant.title} loading="lazy" />
+                        <div className="ps-planner-card-body">
+                          <h3>
+                            {plant.title}
+                            <span className="ps-price">
+                              {plant.currency} {plant.price}
+                            </span>
+                          </h3>
+                          <p className="ps-planner-care">
+                            {tag.water} water · {tag.skill}
+                          </p>
+                          {tip && <p className="ps-planner-tip">{tip}</p>}
+                          <a
+                            className="ps-wa"
+                            href={waLink(plant.whatsappMessage)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <WhatsAppIcon />
+                            Ask about this one
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+            <a className="ps-btn ps-btn--ghost" href="#plants">
+              Browse the full catalog →
+            </a>
+          </div>
+        ) : (
+          <p className="ps-planner-prompt ps-rv">Pick a space and light level above to see your matches.</p>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Plants (from CMS products)                                          */
 /* ------------------------------------------------------------------ */
 
@@ -296,6 +613,16 @@ function Plants() {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState<'default' | 'name' | 'price-asc' | 'price-desc'>('default');
   const [cart, setCart] = useState<Record<string, number>>({});
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [recentlyAdded, setRecentlyAdded] = useState<string | null>(null);
+  const [quickView, setQuickView] = useState<(typeof available)[number] | null>(null);
+  const catalogRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!recentlyAdded) return;
+    const timeout = window.setTimeout(() => setRecentlyAdded(null), 1600);
+    return () => window.clearTimeout(timeout);
+  }, [recentlyAdded]);
 
   const filteredPlants = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -322,6 +649,8 @@ function Plants() {
 
   const addToCart = (plant: (typeof available)[number]) => {
     setCart((current) => ({ ...current, [plant.title]: (current[plant.title] || 0) + 1 }));
+    setIsCartOpen(true);
+    setRecentlyAdded(plant.title);
   };
 
   const updateQuantity = (title: string, delta: number) => {
@@ -349,6 +678,12 @@ function Plants() {
     const message = `Hi Danielle! I’d like to order these plants:\n\n${lines}\n\nTotal: ${settings.general.siteName} ${cartTotal}`;
     return `${waBase}?text=${encodeURIComponent(message)}`;
   }, [cartItems, cartTotal]);
+
+  const bundleHref = useMemo(() => waLink('Hi Danielle! I’d love help building a starter garden bundle for my home.'), []);
+
+  const scrollCatalog = (direction: -1 | 1) => {
+    catalogRef.current?.scrollBy({ left: direction * 320, behavior: 'smooth' });
+  };
 
   return (
     <section className="ps-section ps-section--tight" id="plants">
@@ -390,119 +725,280 @@ function Plants() {
           </label>
         </div>
 
-        <div className="ps-cart-shell">
-          <div className="ps-cart-summary ps-rv">
-            <div className="ps-basket-header">
-              <svg className="ps-basket-icon" viewBox="0 0 24 24" fill="currentColor">
-                {/* Basket body */}
-                <ellipse cx="12" cy="14" rx="8" ry="5" fill="rgba(113,201,94,0.2)" stroke="currentColor" strokeWidth="1.5" />
-                {/* Basket weave pattern */}
-                <path d="M4 14C4 17 7.6 19 12 19C16.4 19 20 17 20 14" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                {/* Basket sides */}
-                <path d="M4.5 14L5 8C5 6 7 5 12 5C17 5 19 6 19 8L19.5 14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                {/* Handle left */}
-                <path d="M6 8Q6 2 12 2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
-                {/* Handle right */}
-                <path d="M18 8Q18 2 12 2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
-                {/* Flowers/plants in basket */}
-                <circle cx="9" cy="10" r="2" fill="rgba(214,72,123,0.6)" />
-                <circle cx="15" cy="10" r="2" fill="rgba(255,193,7,0.6)" />
-                <circle cx="12" cy="8" r="2" fill="rgba(76,175,80,0.6)" />
-              </svg>
-              <div>
-                <div className="ps-cart-title">Your garden basket</div>
-                {cartItems.length > 0 && <span className="ps-basket-count">{cartItems.length} item{cartItems.length !== 1 ? 's' : ''}</span>}
-              </div>
+        <button
+          type="button"
+          className={`ps-cart-fab ${cartItems.length > 0 ? 'ps-cart-fab--active' : ''}`}
+          onClick={() => setIsCartOpen((open) => !open)}
+          aria-label="Open shopping cart"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M5 5h2l1.4 7.1a1 1 0 0 0 1 .8h7.4a1 1 0 0 0 1-.8L16.4 8H7.3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="10" cy="19" r="1.4" fill="currentColor" />
+            <circle cx="16" cy="19" r="1.4" fill="currentColor" />
+          </svg>
+          <span>{cartItems.length > 0 ? `${cartItems.length} selected` : 'Cart'}</span>
+        </button>
+
+        <div className={`ps-cart-backdrop ${isCartOpen ? 'is-visible' : ''}`} onClick={() => setIsCartOpen(false)} />
+
+        <div className={`ps-cart-drawer ${isCartOpen ? 'is-open' : ''}`} role="dialog" aria-modal="true" aria-label="Shopping cart">
+          <div className="ps-cart-drawer__header">
+            <div>
+              <p className="ps-cart-title">Your garden cart</p>
+              <p className="ps-cart-copy">Pick a few favourites and send them to Danielle in one go.</p>
             </div>
-            
-            <div className="ps-cart-copy">
-              Collect your favorites, then send to Danielle via WhatsApp.
-            </div>
-            <div className="ps-cart-total">
-              <span>Total</span>
-              <strong>{settings.general.siteName} {cartTotal}</strong>
-            </div>
-            
-            {cartItems.length > 0 ? (
-              <>
-                <div className="ps-basket-contents">
-                  <ul className="ps-cart-list">
-                    {cartItems.map((item) => (
-                      <li key={item.title} className="ps-basket-item">
-                        <div className="ps-basket-item-info">
-                          <strong>{item.title}</strong>
-                          <span>{item.quantity} × {item.currency} {item.price}</span>
-                        </div>
-                        <div className="ps-cart-actions">
-                          <button type="button" className="ps-qty-btn" onClick={() => updateQuantity(item.title, -1)} title="Remove one">−</button>
-                          <span className="ps-qty-display">{item.quantity}</span>
-                          <button type="button" className="ps-qty-btn" onClick={() => updateQuantity(item.title, 1)} title="Add one">+</button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <a className="ps-btn ps-btn--full ps-btn--basket" href={checkoutHref} target="_blank" rel="noopener noreferrer">
-                  Checkout on WhatsApp →
-                </a>
-              </>
-            ) : (
-              <div className="ps-basket-empty">
-                <svg viewBox="0 0 24 24" fill="currentColor" style={{width: '40px', height: '40px', margin: '0 auto 8px', opacity: 0.4}}>
-                  {/* Basket body */}
-                  <ellipse cx="12" cy="14" rx="8" ry="5" fill="rgba(113,201,94,0.2)" stroke="currentColor" strokeWidth="1.5" />
-                  {/* Basket weave pattern */}
-                  <path d="M4 14C4 17 7.6 19 12 19C16.4 19 20 17 20 14" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                  {/* Basket sides */}
-                  <path d="M4.5 14L5 8C5 6 7 5 12 5C17 5 19 6 19 8L19.5 14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                  {/* Handle left */}
-                  <path d="M6 8Q6 2 12 2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  {/* Handle right */}
-                  <path d="M18 8Q18 2 12 2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  {/* Flowers/plants in basket */}
-                  <circle cx="9" cy="10" r="2" fill="rgba(214,72,123,0.4)" />
-                  <circle cx="15" cy="10" r="2" fill="rgba(255,193,7,0.4)" />
-                  <circle cx="12" cy="8" r="2" fill="rgba(76,175,80,0.4)" />
-                </svg>
-                Your basket is waiting. Add plants to get started.
-              </div>
-            )}
+            <button type="button" className="ps-cart-close" onClick={() => setIsCartOpen(false)} aria-label="Close cart">
+              ×
+            </button>
           </div>
 
+          <div className="ps-cart-total">
+            <span>Total</span>
+            <strong>{settings.general.siteName} {cartTotal}</strong>
+          </div>
+
+          {cartItems.length > 0 ? (
+            <div className="ps-basket-contents">
+              <ul className="ps-cart-list">
+                {cartItems.map((item) => (
+                  <li key={item.title} className="ps-basket-item">
+                    <div className="ps-basket-item-info">
+                      <strong>{item.title}</strong>
+                      <span>{item.quantity} × {item.currency} {item.price}</span>
+                    </div>
+                    <div className="ps-cart-actions">
+                      <button type="button" className="ps-qty-btn" onClick={() => updateQuantity(item.title, -1)} title="Remove one">−</button>
+                      <span className="ps-qty-display">{item.quantity}</span>
+                      <button type="button" className="ps-qty-btn" onClick={() => updateQuantity(item.title, 1)} title="Add one">+</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="ps-basket-empty">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style={{ width: '40px', height: '40px', margin: '0 auto 8px', opacity: 0.4 }}>
+                <ellipse cx="12" cy="14" rx="8" ry="5" fill="rgba(113,201,94,0.2)" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M4 14C4 17 7.6 19 12 19C16.4 19 20 17 20 14" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                <path d="M4.5 14L5 8C5 6 7 5 12 5C17 5 19 6 19 8L19.5 14" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                <path d="M6 8Q6 2 12 2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <path d="M18 8Q18 2 12 2" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <circle cx="9" cy="10" r="2" fill="rgba(214,72,123,0.4)" />
+                <circle cx="15" cy="10" r="2" fill="rgba(255,193,7,0.4)" />
+                <circle cx="12" cy="8" r="2" fill="rgba(76,175,80,0.4)" />
+              </svg>
+              Your cart is waiting. Add plants to get started.
+            </div>
+          )}
+
+          <a className="ps-btn ps-btn--full ps-btn--basket" href={checkoutHref} target="_blank" rel="noopener noreferrer">
+            Checkout on WhatsApp →
+          </a>
+        </div>
+
+        <div className={`ps-cart-toast ${recentlyAdded ? 'is-visible' : ''}`}>
+          {recentlyAdded ? `${recentlyAdded} added to your cart` : ''}
+        </div>
+
+        <div className="ps-sales-panel ps-rv">
+          <div className="ps-sales-copy">
+            <p className="ps-sales-kicker">Most popular choice</p>
+            <h3>Build your starter garden</h3>
+            <p>Mix a statement plant with a compact indoor favourite and let Danielle create a ready-to-grow bundle for your space.</p>
+          </div>
+          <div className="ps-sales-actions">
+            <a className="ps-btn ps-btn--ghost" href={bundleHref} target="_blank" rel="noopener noreferrer">
+              Ask for a bundle
+            </a>
+            <div className="ps-sales-highlights">
+              <span>Freshly grown this week</span>
+              <span>Pickup in Cascavelle</span>
+              <span>Care tips included</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="ps-cart-shell">
           {filteredPlants.length === 0 ? (
             <div className="ps-empty-state ps-rv">
               No plants match that little green search yet. Try another name or reset the filter.
             </div>
           ) : (
-            <div className="ps-plant-grid">
-              {filteredPlants.map((p) => (
-                <article className="ps-plant ps-rv" key={p.title}>
-                  <div className="ps-plant-img">
-                    <img src={p.image} alt={p.title} loading="lazy" />
-                  </div>
-                  <div className="ps-plant-body">
-                    <h3 className="ps-plant-h">
-                      {p.title}
-                      <span className="ps-price">
-                        {p.currency} {p.price}
-                      </span>
-                    </h3>
-                    <p>{p.description}</p>
-                    <div className="ps-plant-actions">
-                      <button type="button" className="ps-wa" onClick={() => addToCart(p)}>
-                        <WhatsAppIcon />
-                        Add to basket
-                      </button>
-                      {cart[p.title] ? <span className="ps-cart-pill">{cart[p.title]} selected</span> : null}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <>
+              <div className="ps-catalog-head ps-rv">
+                <div>
+                  <p className="ps-catalog-kicker">Garden catalog</p>
+                  <p className="ps-catalog-copy">Browse the current collection like a little plant shop.</p>
+                </div>
+                <div className="ps-catalog-nav" aria-label="Catalog navigation">
+                  <button type="button" className="ps-catalog-nav__btn" onClick={() => scrollCatalog(-1)} aria-label="Scroll left">←</button>
+                  <button type="button" className="ps-catalog-nav__btn" onClick={() => scrollCatalog(1)} aria-label="Scroll right">→</button>
+                </div>
+              </div>
+
+              <div className="ps-catalog-viewport ps-rv" ref={catalogRef}>
+                <div className="ps-plant-carousel">
+                  {filteredPlants.map((p, i) => (
+                    <PlantCard
+                      key={p.title}
+                      plant={p}
+                      index={i}
+                      quantity={cart[p.title] || 0}
+                      onReserve={() => addToCart(p)}
+                      onView={() => setQuickView(p)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
+
+      <PlantQuickView
+        plant={quickView}
+        quantity={quickView ? cart[quickView.title] || 0 : 0}
+        onClose={() => setQuickView(null)}
+        onReserve={() => {
+          if (quickView) addToCart(quickView);
+          setQuickView(null);
+        }}
+      />
     </section>
+  );
+}
+
+function PlantCard({
+  plant,
+  index,
+  quantity,
+  onReserve,
+  onView,
+}: {
+  plant: (typeof products)[number];
+  index: number;
+  quantity: number;
+  onReserve: () => void;
+  onView: () => void;
+}) {
+  const tilt = useTilt<HTMLDivElement>();
+
+  const openView = () => onView();
+  const onImgKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onView();
+    }
+  };
+
+  return (
+    <article className="ps-plant ps-rv" style={{ transitionDelay: `${(index % 4) * 70}ms` }}>
+      <div
+        className="ps-plant-img"
+        onClick={openView}
+        onKeyDown={onImgKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-label={`View ${plant.title} full size`}
+      >
+        <div className="ps-plant-img-tilt" ref={tilt.ref} onMouseMove={tilt.onMouseMove} onMouseLeave={tilt.onMouseLeave}>
+          <img src={plant.image} alt={plant.title} loading="lazy" />
+          <span className="ps-plant-view-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+            </svg>
+            View
+          </span>
+        </div>
+      </div>
+      <div className="ps-plant-body">
+        <h3 className="ps-plant-h">
+          {plant.title}
+          <span className="ps-price">
+            {plant.currency} {plant.price}
+          </span>
+        </h3>
+        <p>{plant.description}</p>
+        <div className="ps-plant-actions">
+          <button type="button" className="ps-wa" onClick={onReserve}>
+            <WhatsAppIcon />
+            Reserve now
+          </button>
+          {quantity ? <span className="ps-cart-pill">{quantity} selected</span> : null}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function PlantQuickView({
+  plant,
+  quantity,
+  onClose,
+  onReserve,
+}: {
+  plant: (typeof products)[number] | null;
+  quantity: number;
+  onClose: () => void;
+  onReserve: () => void;
+}) {
+  useEffect(() => {
+    if (!plant) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [plant, onClose]);
+
+  if (!plant) return null;
+
+  return (
+    <div className="ps-quickview-backdrop" onClick={onClose}>
+      <div
+        className="ps-quickview"
+        role="dialog"
+        aria-modal="true"
+        aria-label={plant.title}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button type="button" className="ps-quickview-close" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+        <div className="ps-quickview-img">
+          <img src={plant.image} alt={plant.title} />
+        </div>
+        <div className="ps-quickview-body">
+          <span className="ps-eyebrow">{plant.category}</span>
+          <h3>{plant.title}</h3>
+          <span className="ps-price ps-quickview-price">
+            {plant.currency} {plant.price}
+          </span>
+          <p>{plant.description}</p>
+          <div className="ps-plant-actions">
+            <button type="button" className="ps-wa" onClick={onReserve}>
+              <WhatsAppIcon />
+              Reserve now
+            </button>
+            {quantity ? <span className="ps-cart-pill">{quantity} selected</span> : null}
+          </div>
+          <a
+            className="ps-quickview-ask"
+            href={waLink(plant.whatsappMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ask Danielle a question about this plant →
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -901,6 +1397,7 @@ export default function Redesign() {
       <Nav />
       <Hero />
       <Story />
+      <GardenPlanner />
       <Plants />
       <HowToOrder />
       <Ebook />

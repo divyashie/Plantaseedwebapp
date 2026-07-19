@@ -2,11 +2,7 @@
 title: Golden Pothos
 price: 100
 currency: Rs
-description: |-
-  ☘️🌿🍀 At Rs 100 This lush Golden Pothos is the ultimate low-maintenance superstar:  Air-purifying powerhouse  
-  Thrives in low light (perfect for any room or office)  
-  Gorgeous heart-shaped leaves with creamy gold variegation  
-  Trails dramatically or climbs with ease.
+description: Bring home a lush golden pothos with heart-shaped leaves that brings easy greenery and calm style indoors.
 image: /images/uploads/1000127230.jpg
 whatsappMessage: Hi Danielle! I'd like to pre-order a Golden Pothos for Rs 100
 available: true
